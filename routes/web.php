@@ -14,3 +14,6 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/login/senhaunica', 'Auth\LoginController@redirectToProvider');
+Route::get('/login/senhaunica/callback', 'Auth\LoginController@handleProviderCallback');
