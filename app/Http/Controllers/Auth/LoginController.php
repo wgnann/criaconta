@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Tools\IDMail;
 use App\User;
 use Auth;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -72,8 +73,12 @@ class LoginController extends Controller
             return redirect('/');
         }
 
+        $idmail = new IDMail();
+        $json = json_decode($idmail->id_get_emails($userSenhaUnica->codpes));
+        $email = $idmail->extract_email($json);
+
         $user->nusp = $userSenhaUnica->codpes;
-        $user->email = $userSenhaUnica->codpes.'@usp.br';
+        $user->email = $email;
         $user->name = $userSenhaUnica->nompes;
         $user->save();
 
