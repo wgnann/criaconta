@@ -17,3 +17,4 @@ Route::get('/', function () {
 
 Route::get('/login/senhaunica', 'Auth\LoginController@redirectToProvider');
 Route::get('/login/senhaunica/callback', 'Auth\LoginController@handleProviderCallback');
+Route::get('/logout', 'Auth\LoginController@logout');
