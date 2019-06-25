@@ -11,9 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-});
+Route::get('/', 'IndexController@index');
 
 Route::get('/login/senhaunica', 'Auth\LoginController@redirectToProvider');
 Route::get('/login/senhaunica/callback', 'Auth\LoginController@handleProviderCallback');
