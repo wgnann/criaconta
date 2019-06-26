@@ -59,10 +59,18 @@ class LoginController extends Controller
         $authorized = false;
         foreach ($userSenhaUnica->vinculo as $vinculo) {
             if ($vinculo['siglaUnidade'] == "IME") {
-                if ($vinculo['tipoVinculo'] == 'SERVIDOR' or
-                    $vinculo['tipoVinculo'] == 'ALUNOPOS' or
-                    $vinculo['tipoVinculo'] == 'ALUNOPD') {
-                    $authorized = true;
+                if ($vinculo['tipoVinculo'] == 'ESTAGIARIORH') {
+                    $authorized = 'ESTAGIARIORH';
+                }
+                elseif ($vinculo['tipoVinculo'] == 'ALUNOPOS') {
+                    $authorized = 'ALUNOPOS';
+                }
+                elseif ($vinculo['tipoVinculo'] == 'ALUNOPD') {
+                    $authorized = 'ALUNOPD';
+                }
+                elseif ($vinculo['tipoVinculo'] == 'SERVIDOR') {
+                    $authorized = 'SERVIDOR';
+                    break;
                 }
             }
         }
@@ -77,9 +85,10 @@ class LoginController extends Controller
         $json = json_decode($idmail->id_get_emails($userSenhaUnica->codpes));
         $email = $idmail->extract_email($json);
 
-        $user->nusp = $userSenhaUnica->codpes;
-        $user->email = $email;
         $user->name = $userSenhaUnica->nompes;
+        $user->email = $email;
+        $user->nusp = $userSenhaUnica->codpes;
+        $user->vinculo = $authorized;
         $user->save();
 
         Auth::login($user, true);

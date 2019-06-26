@@ -17,6 +17,7 @@ class CreateGroupsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('code');
+            $table->string('vinculo');
             $table->timestamps();
         });
     }
