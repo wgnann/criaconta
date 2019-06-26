@@ -12,6 +12,7 @@
 */
 
 Route::get('/', 'IndexController@index');
+Route::post('/accounts', 'AccountController@store')->name('accounts');
 
 Route::get('/login/senhaunica', 'Auth\LoginController@redirectToProvider')->name('login');
 Route::get('/login/senhaunica/callback', 'Auth\LoginController@handleProviderCallback');
