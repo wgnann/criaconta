@@ -35,4 +35,24 @@ class AccountController extends Controller
 
         return redirect("/");
     }
+
+    public function todoAccounts(Request $request)
+    {
+        $accounts = Account::where('ativo', 0)->get();
+        $todo = [];
+        foreach ($accounts as $account) {
+            array_push($todo, [
+                'id' => $account->id,
+                'owner' => $account->user->nusp,
+                'owner_name' => $account->user->name,
+                'owner_email' => $account->user->email,
+                'owner_vinculo' => $account->user->vinculo,
+                'username'=> $account->username,
+                'group' => $account->group->code,
+                'name' => $account->name,
+                'type' => $account->type,
+            ]);
+        }
+        return response()->json($todo);
+    }
 }
