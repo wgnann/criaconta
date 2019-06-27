@@ -13,7 +13,7 @@ Para instalar IDMail no laravel, basta:
  * `PASSWORD`
 
 ## Grupos
-Não dispomos de uma interface web para adicionar grupos. Por ora, o procedimento é criar os grupos como no [exemplo](tools/group.php).
+Não dispomos de uma interface web para adicionar grupos. Por ora, o procedimento é criar os grupos como no [exemplo](tools/groups.php).
 
 Para usá-lo, rodar o `php artisan tinker` e:
 ```php
