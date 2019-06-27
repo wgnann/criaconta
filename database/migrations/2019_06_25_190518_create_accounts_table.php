@@ -18,7 +18,7 @@ class CreateAccountsTable extends Migration
             $table->string('username');
             $table->string('name');
             $table->enum('type', ['pessoal', 'institucional', 'local']);
-            $table->binary('status');
+            $table->binary('ativo');
             $table->integer('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('restrict');
             $table->integer('group_id');

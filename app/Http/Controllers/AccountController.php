@@ -27,7 +27,7 @@ class AccountController extends Controller
         $account->username = explode('@', $user->email)[0];
         $account->name = $user->name;
         $account->type = 'pessoal';
-        $account->status = 0;
+        $account->ativo = 0;
         $account->user_id = $user->id;
         $account->group_id = $group->id;
 
