@@ -11,3 +11,12 @@ Para instalar IDMail no laravel, basta:
 É necessário um arquivo `.env` contendo as variáveis:
  * `LOGIN`
  * `PASSWORD`
+
+## Grupos
+Não dispomos de uma interface web para adicionar grupos. Por ora, o procedimento é criar os grupos como no [exemplo](tools/group.php).
+
+Para usá-lo, rodar o `php artisan tinker` e:
+```php
+require('tools/group.php')
+Group::all()
+```
