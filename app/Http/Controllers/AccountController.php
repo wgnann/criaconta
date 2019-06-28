@@ -11,11 +11,12 @@ class AccountController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth')->except('todoAccounts', 'activateAccount', 'cancelAccountRequest');
     }
 
-    public function index()
+    private function authAPI(Request $request)
     {
+        return ($request->api_key == getenv('DEPLOY_KEY'));
     }
 
     public function store(Request $request)
@@ -38,6 +39,10 @@ class AccountController extends Controller
 
     public function todoAccounts(Request $request)
     {
+        if (!$this->authAPI($request)) {
+            return response('Forbidden.', 403);
+        }
+
         $accounts = Account::where('ativo', 0)->get();
         $todo = [];
         foreach ($accounts as $account) {
@@ -56,8 +61,12 @@ class AccountController extends Controller
         return response()->json($todo);
     }
 
-    private function genericInactiveAccount($id, $method)
+    private function genericInactiveAccount($id, $method, Request $request)
     {
+        if (!$this->authAPI($request)) {
+            return response('Forbidden.', 403);
+        }
+
         $account = Account::where([
             ['id', $id],
             ['ativo', 0]
@@ -72,13 +81,13 @@ class AccountController extends Controller
         return response('Success.', 200);
     }
 
-    public function activateAccount($id)
+    public function activateAccount($id, Request $request)
     {
-        return $this->genericInactiveAccount($id, 'activate');
+        return $this->genericInactiveAccount($id, 'activate', $request);
     }
 
-    public function cancelAccountRequest($id)
+    public function cancelAccountRequest($id, Request $request)
     {
-        return $this->genericInactiveAccount($id, 'delete');
+        return $this->genericInactiveAccount($id, 'delete', $request);
     }
 }

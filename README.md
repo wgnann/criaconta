@@ -3,6 +3,9 @@
  * [uspdev/senhaunica-socialite](https://github.com/uspdev/senhaunica-socialite)
  * [idmail](https://github.com/wgnann/idmail)
 
+## Como configurar o acesso via API
+Colocar no `.env` a variável `DEPLOY_KEY`. Depois acessar os endereços da API usando a variável GET `api_key` com o mesmo valor de `DEPLOY_KEY`.
+
 ## Como instalar o IDMail
 Para instalar IDMail no laravel, basta:
  * copiá-lo para o diretório app/Tools ou outro preferido;
