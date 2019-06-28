@@ -56,13 +56,19 @@ class AccountController extends Controller
         return response()->json($todo);
     }
 
-    public function activateAccount($id)
+    private function getInactiveAccount($id)
     {
         $account = Account::where([
             ['id', $id],
             ['ativo', 0]
         ])->first();
 
+        return $account;
+    }
+
+    public function activateAccount($id)
+    {
+        $account = $this->getInactiveAccount($id);
         if (!$account) {
             return response('Not found.', 404);
         }
