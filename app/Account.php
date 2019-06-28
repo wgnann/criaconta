@@ -15,4 +15,10 @@ class Account extends Model
     {
         return $this->belongsTo('App\Group');
     }
+
+    public function activate()
+    {
+        $this->ativo = 1;
+        return $this->save();
+    }
 }

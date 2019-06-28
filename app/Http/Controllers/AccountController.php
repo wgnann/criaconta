@@ -73,8 +73,7 @@ class AccountController extends Controller
             return response('Not found.', 404);
         }
 
-        $account->ativo = 1;
-        $account->save();
+        $account->activate();
 
         return response('Success.', 200);
     }
