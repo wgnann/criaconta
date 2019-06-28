@@ -14,6 +14,7 @@
 Route::get('/', 'IndexController@index');
 Route::post('/accounts', 'AccountController@store')->name('accounts');
 Route::get('/accounts/{id}/activate', 'AccountController@activateAccount');
+Route::get('/accounts/{id}/cancel', 'AccountController@cancelAccountRequest');
 Route::get('/accounts/todo', 'AccountController@todoAccounts');
 
 Route::get('/login/senhaunica', 'Auth\LoginController@redirectToProvider')->name('login');

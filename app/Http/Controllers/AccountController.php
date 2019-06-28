@@ -78,4 +78,16 @@ class AccountController extends Controller
 
         return response('Success.', 200);
     }
+
+    public function cancelAccountRequest($id)
+    {
+        $account = $this->getInactiveAccount($id);
+        if (!$account) {
+            return response('Not found.', 404);
+        }
+
+        $account->delete();
+
+        return response('Success.', 200);
+    }
 }
