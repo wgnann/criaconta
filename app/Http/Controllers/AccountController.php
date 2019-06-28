@@ -55,4 +55,21 @@ class AccountController extends Controller
         }
         return response()->json($todo);
     }
+
+    public function activateAccount($id)
+    {
+        $account = Account::where([
+            ['id', $id],
+            ['ativo', 0]
+        ])->first();
+
+        if (!$account) {
+            return response('Not found.', 404);
+        }
+
+        $account->ativo = 1;
+        $account->save();
+
+        return response('Success.', 200);
+    }
 }

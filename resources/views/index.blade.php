@@ -25,7 +25,7 @@
             <th>Grupo</th>
             <td>{{ $account->group->name }}</td>
           </tr>
-          @if ($account->status)
+          @if ($account->ativo)
             <tr class="table-success">
               <th>status</th>
               <td>ativa</td>
