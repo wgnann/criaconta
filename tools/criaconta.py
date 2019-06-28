@@ -28,11 +28,11 @@ def main():
         for account in todo:
             print(account)
     elif (args.command == "activate"):
-        url = base_url+'/accounts/'+str(args.id)+'/activate?api_key='+api_key
+        url = base_url+'/accounts/'+str(args.id)+'/'+args.command+'?api_key='+api_key
         response = requests.get(url)
         print (response.text)
     elif (args.command == "cancel"):
-        url = base_url+'/accounts/'+str(args.id)+'/activate?api_key='+api_key
+        url = base_url+'/accounts/'+str(args.id)+'/'+args.command+'?api_key='+api_key
         response = requests.get(url)
         print (response.text)
     else:
