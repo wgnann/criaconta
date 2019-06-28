@@ -56,37 +56,29 @@ class AccountController extends Controller
         return response()->json($todo);
     }
 
-    private function getInactiveAccount($id)
+    private function genericInactiveAccount($id, $method)
     {
         $account = Account::where([
             ['id', $id],
             ['ativo', 0]
         ])->first();
 
-        return $account;
+        if (!$account) {
+            return response('Not found.', 404);
+        }
+
+        $account->$method();
+
+        return response('Success.', 200);
     }
 
     public function activateAccount($id)
     {
-        $account = $this->getInactiveAccount($id);
-        if (!$account) {
-            return response('Not found.', 404);
-        }
-
-        $account->activate();
-
-        return response('Success.', 200);
+        return $this->genericInactiveAccount($id, 'activate');
     }
 
     public function cancelAccountRequest($id)
     {
-        $account = $this->getInactiveAccount($id);
-        if (!$account) {
-            return response('Not found.', 404);
-        }
-
-        $account->delete();
-
-        return response('Success.', 200);
+        return $this->genericInactiveAccount($id, 'delete');
     }
 }
