@@ -4,8 +4,8 @@
  * [idmail](https://github.com/wgnann/idmail)
 
 ## Como configurar o acesso via API
- * Colocar no `.env` a variável `DEPLOY_KEY`;
- * Acessar os endereços da API usando a variável GET `api_key` com o mesmo valor de `DEPLOY_KEY`.
+ * Colocar no `.env` a variável `API_KEY`;
+ * Acessar os endereços da API usando a variável GET `api_key` com o mesmo valor de `API_KEY`.
 
 ### Chamadas disponíveis
  * `accounts/todo`: mostra lista de contas não processadas;

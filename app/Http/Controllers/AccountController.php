@@ -16,7 +16,7 @@ class AccountController extends Controller
 
     private function authAPI(Request $request)
     {
-        return ($request->api_key == getenv('DEPLOY_KEY'));
+        return ($request->api_key == getenv('API_KEY'));
     }
 
     public function store(Request $request)
