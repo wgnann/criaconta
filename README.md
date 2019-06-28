@@ -29,3 +29,10 @@ Para usá-lo, rodar o `php artisan tinker` e:
 require('tools/group.php')
 Group::all()
 ```
+
+## Utilitário de terminal
+Há um [utilitário de terminal](tools/criaconta.py) que conversa com a API. O objetivo é utilizá-lo para integrar com o lado de dentro da rede.
+
+Ele precisa de duas variáveis de ambiente:
+ * `API_KEY`: a mesma requerida pela API;
+ * `BASE_URL`: URL onde roda a API.
