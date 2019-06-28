@@ -10,9 +10,7 @@ class CriaConta:
     def list(self):
         url = self.base_url+'/accounts/todo?api_key='+self.api_key
         response = requests.get(url)
-        todo = response.json()
-        for account in todo:
-            print(account)
+        return response.json()
 
     def activate(self, acc_id):
         url = self.base_url+'/accounts/'+acc_id+'/activate?api_key='+self.api_key
@@ -43,7 +41,9 @@ def main():
     criaconta = CriaConta()
 
     if (args.command == "list"):
-        criaconta.list()
+        todo = criaconta.list()
+        for account in todo:
+            print (account)
     elif (args.command == "activate"):
         criaconta.activate(str(args.id))
     elif (args.command == "cancel"):
