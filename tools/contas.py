@@ -1,6 +1,7 @@
 import criaconta
-import os
 import subprocess
+import unidecode
+from decouple import config
 
 def show(account):
     acc_id = account['id']
@@ -17,17 +18,25 @@ def check(account):
     username = account['username']
     return subprocess.call(["/usr/sbin/smbldap-usershow", username])
 
+def add(account, skel):
+    username = account['username']
+    name = unidecode.unidecode(account['name'])
+    group = account['group']
+    home = "/home/%s/%s"%(group, username)
+    return subprocess.call(["/usr/sbin/smbldap-useradd", "-a", "-c", name, "-d", home, "-g", group, "-k", skel, "-m", username])
+
 def setquota(account, soft, hard):
     username = account['username']
     return ssh("nfs.ime.usp.br", "setquota -a -u %s %s %s 0 0"%(username, soft, hard))
 
 def create(account):
-    skel_dir = os.path.dirname(os.path.abspath(__file__))+'/skel'
+    skel = config('SKEL_DIR')
     soft_disk = 5120000
     hard_disk = 6144000
 
     if(check(account) == 0):
         return 1
+    add(account, skel)
     setquota(account, soft_disk, hard_disk)
 
     return 0
