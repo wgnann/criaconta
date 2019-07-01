@@ -15,12 +15,21 @@ class CriaConta:
     def activate(self, acc_id):
         url = self.base_url+'/accounts/'+acc_id+'/activate?api_key='+self.api_key
         response = requests.get(url)
-        print ('activate: '+acc_id+': '+response.text)
+        return response.status_code
 
     def cancel(self, acc_id):
         url = self.base_url+'/accounts/'+acc_id+'/cancel?api_key='+self.api_key
         response = requests.get(url)
-        print ('cancel: '+acc_id+': '+response.text)
+        return response.status_code
+
+def show_response(status, command, acc_id):
+    if (status == 200):
+        response = "success"
+    elif (status == 404):
+        response = "not found"
+    else:
+        response = "invalid command"
+    print (command+': id '+acc_id+': '+response)
 
 def main():
     parser = argparse.ArgumentParser()
@@ -45,9 +54,11 @@ def main():
         for account in todo:
             print (account)
     elif (args.command == "activate"):
-        criaconta.activate(str(args.id))
+        status = criaconta.activate(str(args.id))
+        show_response(status, args.command, str(args.id))
     elif (args.command == "cancel"):
-        criaconta.cancel(str(args.id))
+        status = criaconta.cancel(str(args.id))
+        show_response(status, args.command, str(args.id))
     else:
         print("modo inválido.")
 
