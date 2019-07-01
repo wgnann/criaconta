@@ -45,6 +45,17 @@ def subscribe(account):
     group = 'g-'+account['group']
     return ssh("lists.ime.usp.br", "echo %s | add_members -r - -a n -w n %s"%(email, group))
 
+def pykota(account):
+    username = account['username']
+    group = account['group']
+    quota = config('PRINT_QUOTA', cast=int)
+    if group in ['mac', 'mae', 'map', 'mat']:
+        quota = config('PROF_PRINT_QUOTA', cast=int)
+    grace = quota+50
+    ssh("cups.ime.usp.br", "pkusers -a %s"%(username))
+    ssh("cups.ime.usp.br", "edpykota -P'*' -m 500 --add %s"%(username))
+    return ssh("cups.ime.usp.br", "edpykota -PIME -S %s -H %s -m 500 --add %s"%(quota, grace, username))
+
 def create(account):
     home = "/home/%s/%s"%(group, username)
     passwd = pwgen.pwgen()
@@ -56,6 +67,7 @@ def create(account):
     setquota(account)
     password(account, passwd)
     subscribe(account)
+    pykota(account)
 
     return 0
 
