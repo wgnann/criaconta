@@ -40,6 +40,11 @@ def password(account, passwd):
     keytab = config('KRB_KEYTAB')
     return subprocess.call(["/usr/bin/kadmin", "-p", principal, "-k", "-t", keytab, "-q", "addprinc -pw %s %s"%(passwd, username)])
 
+def subscribe(account):
+    email = account['username']+'@ime.usp.br'
+    group = 'g-'+account['group']
+    return ssh("lists.ime.usp.br", "echo %s | add_members -r - -a n -w n %s"%(email, group))
+
 def create(account):
     home = "/home/%s/%s"%(group, username)
     passwd = pwgen.pwgen()
@@ -50,6 +55,7 @@ def create(account):
     os.chmod(home, 711)
     setquota(account)
     password(account, passwd)
+    subscribe(account)
 
     return 0
 
