@@ -1,4 +1,6 @@
 import criaconta
+import os
+import pwgen
 import subprocess
 import unidecode
 from decouple import config
@@ -18,26 +20,36 @@ def check(account):
     username = account['username']
     return subprocess.call(["/usr/sbin/smbldap-usershow", username])
 
-def add(account, skel):
+def add(account):
     username = account['username']
     name = unidecode.unidecode(account['name'])
     group = account['group']
+    skel = config('SKEL_DIR')
     home = "/home/%s/%s"%(group, username)
     return subprocess.call(["/usr/sbin/smbldap-useradd", "-a", "-c", name, "-d", home, "-g", group, "-k", skel, "-m", username])
 
-def setquota(account, soft, hard):
+def setquota(account):
     username = account['username']
+    soft = config('DISK_QUOTA', cast=int)
+    hard = round(soft*1.2)
     return ssh("nfs.ime.usp.br", "setquota -a -u %s %s %s 0 0"%(username, soft, hard))
 
+def password(account, passwd):
+    username = account['username']
+    principal = config('KRB_PRINCIPAL')
+    keytab = config('KRB_KEYTAB')
+    return subprocess.call(["/usr/bin/kadmin", "-p", principal, "-k", "-t", keytab, "-q", "addprinc -pw %s %s"%(passwd, username)])
+
 def create(account):
-    skel = config('SKEL_DIR')
-    soft_disk = 5120000
-    hard_disk = 6144000
+    home = "/home/%s/%s"%(group, username)
+    passwd = pwgen.pwgen()
 
     if(check(account) == 0):
         return 1
-    add(account, skel)
-    setquota(account, soft_disk, hard_disk)
+    add(account)
+    os.chmod(home, 711)
+    setquota(account)
+    password(account, passwd)
 
     return 0
 
