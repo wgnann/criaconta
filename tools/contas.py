@@ -1,5 +1,6 @@
 import criaconta
 import os
+import subprocess
 
 def show(account):
     acc_id = account['id']
@@ -8,15 +9,35 @@ def show(account):
     name = account['name']
     return "  id: %s, username: %s, group: %s, name: %s"%(acc_id, username, group, name)
 
+def ssh(host, command):
+    run = ["/usr/bin/ssh", "-l", "root", host]+command.split()
+    return subprocess.call(run)
+
+def check(account):
+    username = account['username']
+    return subprocess.call(["/usr/sbin/smbldap-usershow", username])
+
+def setquota(account, soft, hard):
+    username = account['username']
+    return ssh("nfs.ime.usp.br", "setquota -a -u %s %s %s 0 0"%(username, soft, hard))
+
 def create(account):
-    return "sucesso"
+    skel_dir = os.path.dirname(os.path.abspath(__file__))+'/skel'
+    soft_disk = 5120000
+    hard_disk = 6144000
+
+    if(check(account) == 0):
+        return 1
+    setquota(account, soft_disk, hard_disk)
+
+    return 0
 
 def main():
     api = criaconta.CriaConta()
 
     while (1):
         todo = api.list()
-        os.system("clear")
+        subprocess.call("clear")
         print("---\nos seguintes usuários serão criados:")
         for account in todo:
             print(show(account))
@@ -25,7 +46,10 @@ def main():
         option = input("\n  [c]riar todas as contas\n  [n]ão criar alguma\n  default: sair\n\nopção: ")
         if (option == 'c'):
             for account in todo:
-                print(account['username']+': '+create(account))
+                if (create(account) != 0):
+                    print("conta "+account['username']+" fracassou.")
+                else:
+                    print("conta "+account['username']+" criada.")
             break
         elif (option == 'n'):
             acc_id = input("qual o id da conta para não criar? ")
