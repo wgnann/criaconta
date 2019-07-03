@@ -107,10 +107,18 @@ def main():
         option = input("\n  [c]riar todas as contas\n  [n]ão criar alguma\n  default: sair\n\nopção: ")
         if (option == 'c'):
             for account in todo:
+                acc_id = str(account['id'])
+                username = account['username']
                 if (create(account) != 0):
-                    print("conta "+account['username']+" fracassou.")
+                    print("conta "+username+" fracassou no backend.")
                 else:
-                    print("conta "+account['username']+" criada.")
+                    status = api.activate(acc_id)
+                    if (status == 200):
+                        print("conta "+username+" criada.")
+                    elif (status == 404):
+                        print("conta "+username+" fracassou na API.")
+                    else:
+                        print("comando inválido.\n")
             break
         elif (option == 'n'):
             acc_id = input("qual o id da conta para não criar? ")
