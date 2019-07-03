@@ -1,9 +1,12 @@
 import criaconta
 import os
 import pwgen
+import smtplib
+import ssl
 import subprocess
 import unidecode
 from decouple import config
+from email.message import EmailMessage
 
 def show(account):
     acc_id = account['id']
@@ -34,8 +37,9 @@ def setquota(account):
     hard = round(soft*1.2)
     return ssh("nfs.ime.usp.br", "setquota -a -u %s %s %s 0 0"%(username, soft, hard))
 
-def password(account, passwd):
+def password(account):
     username = account['username']
+    passwd = account['passwd']
     principal = config('KRB_PRINCIPAL')
     keytab = config('KRB_KEYTAB')
     return subprocess.call(["/usr/bin/kadmin", "-p", principal, "-k", "-t", keytab, "-q", "addprinc -pw %s %s"%(passwd, username)])
@@ -56,18 +60,36 @@ def pykota(account):
     ssh("cups.ime.usp.br", "edpykota -P'*' -m 500 --add %s"%(username))
     return ssh("cups.ime.usp.br", "edpykota -PIME -S %s -H %s -m 500 --add %s"%(quota, grace, username))
 
+def mail(account, template):
+    receiver = account['owner_email']
+    server = config('SMTP_SERVER')
+    sender = config('MAIL_SENDER')
+    content = open(template, 'r').read()
+
+    message = EmailMessage()
+    message['Subject'] = 'Pedido de criação de conta'
+    message['From'] = sender
+    message['To'] = receiver
+    message.set_content(content.format(**account))
+
+    context = ssl.create_default_context()
+    with smtplib.SMTP(server, 25) as smtp:
+        smtp.starttls(context=context)
+        smtp.send_message(message)
+
 def create(account):
-    home = "/home/%s/%s"%(group, username)
-    passwd = pwgen.pwgen()
+    account['passwd'] = pwgen.pwgen()
+    home = "/home/%s/%s"%(account['group'], account['username'])
 
     if(check(account) == 0):
         return 1
     add(account)
-    os.chmod(home, 711)
+    os.chmod(home, 0o711)
     setquota(account)
-    password(account, passwd)
+    password(account)
     subscribe(account)
     pykota(account)
+    mail(account, 'create.txt')
 
     return 0
 
