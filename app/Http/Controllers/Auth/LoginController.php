@@ -81,9 +81,17 @@ class LoginController extends Controller
             return redirect('/');
         }
 
-        $idmail = new IDMail();
-        $json = json_decode($idmail->id_get_emails($userSenhaUnica->codpes));
-        $email = $idmail->extract_email($json);
+        $nusp = $userSenhaUnica->codpes;
+        $email = IDMail::find_mail($nusp);
+        if ($email == "") {
+            $idmail = new IDMail();
+            $json = json_decode($idmail->id_get_emails($nusp));
+            $email = $idmail->extract_email($json);
+        }
+
+        if ($email == "") {
+            die("email não encontrado.");
+        }
 
         $user->name = $userSenhaUnica->nompes;
         $user->email = $email;
