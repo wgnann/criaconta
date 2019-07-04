@@ -26,11 +26,11 @@ class AccountController extends Controller
         $user = Auth::user();
         $group = Group::where('id', $request->group)->first();
 
-        $email = IDMail::find_mail($user->nusp);
+        $email = IDMail::find_mail($user->nusp, ["P", "O"]);
         if ($email == "") {
             $idmail = new IDMail();
             $json = json_decode($idmail->id_get_emails($user->nusp));
-            $email = $idmail->extract_email($json);
+            $email = $idmail->extract_email($json, "ime.usp.br", ["Pessoal", "Secundaria"]);
         }
 
         if ($email == "") {
