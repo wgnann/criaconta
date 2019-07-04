@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Account;
 use App\Group;
+use App\Tools\IDMail;
 use Auth;
 use Illuminate\Http\Request;
 
@@ -25,7 +26,18 @@ class AccountController extends Controller
         $user = Auth::user();
         $group = Group::where('id', $request->group)->first();
 
-        $account->username = explode('@', $user->email)[0];
+        $email = IDMail::find_mail($user->nusp);
+        if ($email == "") {
+            $idmail = new IDMail();
+            $json = json_decode($idmail->id_get_emails($user->nusp));
+            $email = $idmail->extract_email($json);
+        }
+
+        if ($email == "") {
+            die("email não encontrado.");
+        }
+
+        $account->username = explode('@', $email)[0];
         $account->name = $user->name;
         $account->type = 'pessoal';
         $account->ativo = 0;

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Tools\IDMail;
 use App\User;
 use Auth;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -81,20 +80,8 @@ class LoginController extends Controller
             return redirect('/');
         }
 
-        $nusp = $userSenhaUnica->codpes;
-        $email = IDMail::find_mail($nusp);
-        if ($email == "") {
-            $idmail = new IDMail();
-            $json = json_decode($idmail->id_get_emails($nusp));
-            $email = $idmail->extract_email($json);
-        }
-
-        if ($email == "") {
-            die("email não encontrado.");
-        }
-
+        $user->email = $userSenhaUnica->email;
         $user->name = $userSenhaUnica->nompes;
-        $user->email = $email;
         $user->nusp = $userSenhaUnica->codpes;
         $user->vinculo = $authorized;
         $user->save();
