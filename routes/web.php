@@ -17,6 +17,8 @@ Route::get('/accounts/{id}/activate', 'AccountController@activateAccount');
 Route::get('/accounts/{id}/cancel', 'AccountController@cancelAccountRequest');
 Route::get('/accounts/todo', 'AccountController@todoAccounts');
 
+Route::get('/institucional', 'InstitutionalAccountController@index');
+
 Route::get('/login/senhaunica', 'Auth\LoginController@redirectToProvider')->name('login');
 Route::get('/login/senhaunica/callback', 'Auth\LoginController@handleProviderCallback');
 Route::get('/logout', 'Auth\LoginController@logout');
