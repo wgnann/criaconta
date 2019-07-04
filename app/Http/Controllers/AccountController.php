@@ -26,7 +26,7 @@ class AccountController extends Controller
         $user = Auth::user();
         $group = Group::where('id', $request->group)->first();
 
-        $email = IDMail::find_mail($user->nusp, ["P", "O"]);
+        $email = IDMail::find_email($user->nusp, ["P", "O"]);
         if ($email == "") {
             $idmail = new IDMail();
             $json = json_decode($idmail->id_get_emails($user->nusp));
