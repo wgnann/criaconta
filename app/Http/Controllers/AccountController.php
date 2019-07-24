@@ -26,14 +26,8 @@ class AccountController extends Controller
         $user = Auth::user();
         $group = Group::where('id', $request->group)->first();
 
-        $email = IDMail::find_email($user->nusp, ["P", "O"]);
-        if ($email == "") {
-            $idmail = new IDMail();
-            $json = json_decode($idmail->id_get_emails($user->nusp));
-            $email = $idmail->extract_email($json, "ime.usp.br", ["Pessoal", "Secundaria"]);
-        }
-
-        if ($email == "") {
+        $email = IDMail::find_email($user->nusp);
+        if ($email == null) {
             die("email não encontrado.");
         }
 
@@ -43,7 +37,6 @@ class AccountController extends Controller
         $account->ativo = 0;
         $account->user_id = $user->id;
         $account->group_id = $group->id;
-
         $account->save();
 
         return redirect("/");

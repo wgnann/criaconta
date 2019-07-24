@@ -13,9 +13,7 @@ class InstitutionalAccountController extends Controller
     public function index()
     {
         $nusp = Auth::user()->nusp;
-        $idmail = new IDMail();
-        $json = json_decode($idmail->id_get_emails($nusp));
-        $emails = $idmail->list_emails($json, "ime.usp.br", ["Institucional", "Grupo"]);
+        $emails = IDMail::find_lists($nusp);
         return view('institutional.index', compact('emails'));
     }
 }
