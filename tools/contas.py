@@ -121,12 +121,18 @@ def main():
             print(show(account))
 
         print("---")
-        option = input("\n  [t]odas as contas pessoais serão criadas\n  [n]ão criar alguma\n  default: sair\n\nopção: ")
+        option = input("\n  [t]odas as pessoais serão criadas\n  [c]riar uma conta específica\n  [n]ão criar alguma\n  default: sair\n\nopção: ")
         if (option == 't'):
             for account in todo:
                 if(account['group'] != "spec"):
                     create(account)
             break
+        elif (option == 'c'):
+            acc_id = input("qual o id da conta que será criada? ")
+            for account in todo:
+                if (acc_id == str(account['id'])):
+                    create(account)
+            input("pressione enter para retornar... ")
         elif (option == 'n'):
             acc_id = input("qual o id da conta para não criar? ")
             status = api.cancel(acc_id)
