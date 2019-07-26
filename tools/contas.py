@@ -12,6 +12,8 @@ def show(account):
     acc_id = account['id']
     username = account['username']
     group = account['group']
+    if (group == "spec"):
+        group = "\x1b[91m"+group+"\x1b[0m"
     name = account['name']
     return "  id: %s, username: %s, group: %s, name: %s"%(acc_id, username, group, name)
 
@@ -119,10 +121,11 @@ def main():
             print(show(account))
 
         print("---")
-        option = input("\n  [c]riar todas as contas\n  [n]ão criar alguma\n  default: sair\n\nopção: ")
-        if (option == 'c'):
+        option = input("\n  [t]odas as contas pessoais serão criadas\n  [n]ão criar alguma\n  default: sair\n\nopção: ")
+        if (option == 't'):
             for account in todo:
-                create(account)
+                if(account['group'] != "spec"):
+                    create(account)
             break
         elif (option == 'n'):
             acc_id = input("qual o id da conta para não criar? ")
