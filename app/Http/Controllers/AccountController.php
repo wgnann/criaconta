@@ -65,6 +65,7 @@ class AccountController extends Controller
                 'group' => $account->group->code,
                 'name' => $account->name,
                 'type' => $account->type,
+                'obs' => $account->obs,
             ]);
         }
         return response()->json($todo);
