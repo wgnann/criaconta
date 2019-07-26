@@ -77,7 +77,7 @@ def mail(account, template):
         smtp.starttls(context=context)
         smtp.send_message(message)
 
-def create(account):
+def create_backend(account):
     account['passwd'] = pwgen.pwgen()
     home = "/home/%s/%s"%(account['group'], account['username'])
 
@@ -93,6 +93,21 @@ def create(account):
 
     return 0
 
+def create(account):
+    api = criaconta.CriaConta()
+    acc_id = str(account['id'])
+    username = account['username']
+    if (create_backend(account) != 0):
+        print("conta "+username+" fracassou no backend.")
+    else:
+        status = api.activate(acc_id)
+        if (status == 200):
+            print("conta "+username+" criada.")
+        elif (status == 404):
+            print("conta "+username+" fracassou na API.")
+        else:
+            print("comando inválido.\n")
+
 def main():
     api = criaconta.CriaConta()
 
@@ -107,18 +122,7 @@ def main():
         option = input("\n  [c]riar todas as contas\n  [n]ão criar alguma\n  default: sair\n\nopção: ")
         if (option == 'c'):
             for account in todo:
-                acc_id = str(account['id'])
-                username = account['username']
-                if (create(account) != 0):
-                    print("conta "+username+" fracassou no backend.")
-                else:
-                    status = api.activate(acc_id)
-                    if (status == 200):
-                        print("conta "+username+" criada.")
-                    elif (status == 404):
-                        print("conta "+username+" fracassou na API.")
-                    else:
-                        print("comando inválido.\n")
+                create(account)
             break
         elif (option == 'n'):
             acc_id = input("qual o id da conta para não criar? ")
