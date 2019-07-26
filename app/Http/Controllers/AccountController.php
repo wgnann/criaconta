@@ -24,7 +24,11 @@ class AccountController extends Controller
     {
         $account = new Account();
         $user = Auth::user();
+
         $group = Group::where('id', $request->group)->first();
+        if ($group == null) {
+            die("grupo não encontrado.");
+        }
 
         $email = IDMail::find_email($user->nusp);
         if ($email == null) {

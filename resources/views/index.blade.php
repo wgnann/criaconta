@@ -40,7 +40,7 @@
         </table>
       @else
         <h4>Conta não criada</h4>
-        <form action="{{ url('accounts') }}" method="post">
+        <form action="{{ route('accounts') }}" method="post">
           @csrf
           <table class="table table-sm table-info">
           <tbody>

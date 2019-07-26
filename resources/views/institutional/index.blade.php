@@ -17,23 +17,37 @@
       @if ($todo)
         <div class="border border-info my-1 p-1">
           <h5 class="text-info">Contas não criadas</h5>
-          <table class="table table-sm">
-            <thead>
-              <tr>
-                <th>Email</th>
-                <th>Nome</th>
-              </td>
-            </thead>
-            <tbody>
-            @foreach ($todo as $todo_account)
-              <tr>
-                <td>{{ $todo_account['email'] }}</td>
-                <td>{{ $todo_account['name'] }}</td>
-                <td>action</td>
-              </tr>
-            @endforeach
-            </tbody>
-          </table>
+          <form action="{{ route('institutional.accounts') }}" method="post">
+            @csrf
+            <table class="table table-sm">
+              <thead>
+                <tr>
+                  <th>Email</th>
+                  <th>Nome</th>
+                  <th>Escolhida</th>
+                </td>
+              </thead>
+              <tbody>
+                @foreach ($todo as $todo_key => $todo_account)
+                  <tr>
+                    <td>{{ $todo_account['email'] }}</td>
+                    <td>{{ $todo_account['name'] }}</td>
+                    <td><input type="radio" name="email" value="{{ $todo_account['email'] }}" /></td>
+                  </tr>
+                @endforeach
+                <tr>
+                  <td></td>
+                  <td>
+                    <div class="input-group">
+                      <textarea class="form-control" placeholder="Observações" name="obs"></textarea>
+                      <button class="btn btn-info" type="submit">Criar</button>
+                    </div>
+                  </td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </form>
         </div>
       @endif
       @if ($queued)
@@ -52,6 +66,7 @@
               <tr>
                 <td>{{ $queued_account->username }}@ime.usp.br</td>
                 <td>{{ $queued_account->name }}</td>
+                <td></td>
               </tr>
             @endforeach
             </tbody>

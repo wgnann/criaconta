@@ -18,6 +18,7 @@ $groups = [
     ['Pós Doutorado Estatística', 'posdocmae', 'ALUNOPD'],
     ['Pós Doutorado Matemática Aplicada', 'posdocmap', 'ALUNOPD'],
     ['Pós Doutorado Matemática', 'posdocmat', 'ALUNOPD'],
+    ['Institucional', 'spec', 'INSTITUCIONAL'],
 ];
 
 foreach ($groups as $group) {
