@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Tools\IDMail;
 use App\User;
 use Auth;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -45,6 +46,28 @@ class LoginController extends Controller
         return Socialite::driver('senhaunica')->redirect();
     }
 
+    private function maiorVinculo($vinculos) {
+        # o último é o com mais privilégio
+        $ordenado = [
+            "ALUNOPD",
+            "ALUNOGR",
+            "ALUNOPOS",
+            "ESTAGIARIORH",
+            "SERVIDOR"
+        ];
+
+        $vinculoUSP = "OUTRO";
+        if (is_array($vinculos)) {
+            foreach ($vinculos as $vinculo) {
+                if (in_array($vinculo, $ordenado)) {
+                    $vinculoUSP = $vinculo;
+                }
+            }
+        }
+
+        return $vinculoUSP;
+    }
+
     public function handleProviderCallback()
     {
         $userSenhaUnica = Socialite::driver('senhaunica')->user();
@@ -54,36 +77,30 @@ class LoginController extends Controller
             $user = new User;
         }
 
-        # autorização por grupo
-        $authorized = false;
+        $vinculos = [];
         foreach ($userSenhaUnica->vinculo as $vinculo) {
             if ($vinculo['siglaUnidade'] == "IME") {
-                if ($vinculo['tipoVinculo'] == 'ESTAGIARIORH') {
-                    $authorized = 'ESTAGIARIORH';
-                }
-                elseif ($vinculo['tipoVinculo'] == 'ALUNOPOS') {
-                    $authorized = 'ALUNOPOS';
-                }
-                elseif ($vinculo['tipoVinculo'] == 'ALUNOPD') {
-                    $authorized = 'ALUNOPD';
-                }
-                elseif ($vinculo['tipoVinculo'] == 'SERVIDOR') {
-                    $authorized = 'SERVIDOR';
-                    break;
-                }
+                $vinculos[] = $vinculo['tipoVinculo'];
             }
         }
 
-        # aqui ficará autorização individual, se necessário
+        $vinculo = $this->maiorVinculo($vinculos);
+        $nusp = $userSenhaUnica->codpes;
+        if ($vinculo != "SERVIDOR") {
+            $emailIME = IDMail::find_email($nusp);
+            if ($emailIME == null) {
+                die("email não encontrado.");
+            }
+        }
 
-        if (!$authorized) {
+        if (!$vinculos) {
             return redirect('/');
         }
 
         $user->email = $userSenhaUnica->email;
         $user->name = $userSenhaUnica->nompes;
-        $user->nusp = $userSenhaUnica->codpes;
-        $user->vinculo = $authorized;
+        $user->nusp = $nusp;
+        $user->vinculo = $vinculo;
         $user->save();
 
         Auth::login($user, true);
