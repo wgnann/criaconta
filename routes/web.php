@@ -13,6 +13,7 @@
 
 Route::get('/', 'IndexController@index');
 
+Route::get('/accounts', 'AccountController@index');
 Route::post('/accounts', 'AccountController@store')->name('accounts');
 Route::get('/accounts/{id}/activate', 'AccountController@activateAccount');
 Route::get('/accounts/{id}/cancel', 'AccountController@cancelAccountRequest');

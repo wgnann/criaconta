@@ -8,6 +8,11 @@ return [
     'login_url' => 'login/senhaunica',
     'menu' => [
         [
+            'text' => 'Conta pessoal',
+            'url' => '/accounts',
+            'can' => '',
+        ],
+        [
             'text' => 'Conta institucional',
             'url'  => '/institucional',
             'can'  => 'institutional',
