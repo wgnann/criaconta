@@ -10,7 +10,7 @@ return [
         [
             'text' => 'Conta institucional',
             'url'  => '/institucional',
-            'can'  => '',
+            'can'  => 'institutional',
         ],
     ]
 ];

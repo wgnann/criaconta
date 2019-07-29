@@ -10,6 +10,12 @@ use Illuminate\Http\Request;
 
 class InstitutionalAccountController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('can:institutional');
+    }
+
     public function index()
     {
         $nusp = Auth::user()->nusp;
