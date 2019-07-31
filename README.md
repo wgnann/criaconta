@@ -42,8 +42,10 @@ A configuração da API depende dos parâmetros:
 Já o backend depende da API e dos parâmetros:
   * `SKEL_DIR`: localização do modelo de `skel` do usuário;
   * `DISK_QUOTA`: quota de disco do usuário, em bytes;
-  * `KRB_PRINCIPAL`: principal do Kerberos utilizado para adicionar contas;
-  * `KRB_KEYTAB`: localização da keytab associada ao principal do Kerberos;
+  * `KRB_ADD_PRINCIPAL`: principal do Kerberos utilizado para adicionar contas;
+  * `KRB_ADD_KEYTAB`: localização da keytab associada ao principal correspondente;
+  * `KRB_CPW_PRINCIPAL`: principal do Kerberos utilizado para renovar senhas;
+  * `KRB_ADD_KEYTAB`: localização da keytab associada ao principal correspondente;
   * `PRINT_QUOTA`: quota de impressão geral, em páginas;
   * `PROF_PRINT_QUOTA`: quota de impressão para docentes, em páginas;
   * `SMTP_SERVER`: endereço do servidor de SMTP utilizado;

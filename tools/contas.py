@@ -1,3 +1,4 @@
+import argparse
 import criaconta
 import os
 import pwgen
@@ -39,12 +40,19 @@ def setquota(account):
     hard = round(soft*1.2)
     return ssh("nfs.ime.usp.br", "setquota -a -u %s %s %s 0 0"%(username, soft, hard))
 
-def password(account):
+def password(account, mode):
     username = account['username']
     passwd = account['passwd']
-    principal = config('KRB_PRINCIPAL')
-    keytab = config('KRB_KEYTAB')
-    return subprocess.call(["/usr/bin/kadmin", "-p", principal, "-k", "-t", keytab, "-q", "addprinc -pw %s %s"%(passwd, username)])
+
+    if (mode == 'add'):
+        principal = config('KRB_ADD_PRINCIPAL')
+        keytab = config('KRB_ADD_KEYTAB')
+        command = "addprinc -pw %s %s"%(passwd, username)
+    elif (mode == 'cpw'):
+        principal = config('KRB_CPW_PRINCIPAL')
+        keytab = config('KRB_CPW_KEYTAB')
+        command = "cpw -pw %s %s"%(passwd, username)
+    return subprocess.call(["/usr/bin/kadmin", "-p", principal, "-k", "-t", keytab, "-q", command])
 
 def subscribe(account):
     email = account['username']+'@ime.usp.br'
@@ -62,14 +70,14 @@ def pykota(account):
     ssh("cups.ime.usp.br", "edpykota -P'*' -m 500 --add %s"%(username))
     return ssh("cups.ime.usp.br", "edpykota -PIME -S %s -H %s -m 500 --add %s"%(quota, grace, username))
 
-def mail(account, template):
+def mail(account, subject, template):
     receiver = account['owner_email']
     server = config('SMTP_SERVER')
     sender = config('MAIL_SENDER')
     content = open(template, 'r').read()
 
     message = EmailMessage()
-    message['Subject'] = 'Pedido de criação de conta'
+    message['Subject'] = subject
     message['From'] = sender
     message['To'] = receiver
     message.set_content(content.format(**account))
@@ -88,10 +96,10 @@ def create_backend(account):
     add(account)
     os.chmod(home, 0o711)
     setquota(account)
-    password(account)
+    password(account, 'add')
     subscribe(account)
     pykota(account)
-    mail(account, 'create.txt')
+    mail(account, 'Pedido de criação de conta', 'create.txt')
 
     return 0
 
@@ -110,7 +118,7 @@ def create(account):
         else:
             print("comando inválido.\n")
 
-def main():
+def interactive_mode():
     api = criaconta.CriaConta()
 
     while (1):
@@ -145,6 +153,30 @@ def main():
             input("pressione enter para retornar... ")
         else:
             break
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--passwd', action='store_true', help="processa todos os pedidos de recuperação de senha")
+    args = parser.parse_args()
+
+    if (args.passwd):
+        api = criaconta.CriaConta()
+        todo = api.password_requests()
+        for request in todo:
+            request_id = str(request['id'])
+            username = request['username']
+            request['passwd'] = pwgen.pwgen()
+            password(request, 'cpw')
+            mail(request, 'Recuperação de senha', 'passwd.txt')
+            status = api.password_reset(request_id)
+            if (status == 200):
+                print("conta "+username+" criada.")
+            elif (status == 404):
+                print("conta "+username+" fracassou na API.")
+            else:
+                print("comando inválido.\n")
+    else:
+        interactive_mode()
 
 if __name__ == "__main__":
     main()

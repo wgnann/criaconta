@@ -22,6 +22,16 @@ class CriaConta:
         response = requests.get(url)
         return response.status_code
 
+    def password_requests(self):
+        url = self.base_url+'/password/requests?api_key='+self.api_key
+        response = requests.get(url)
+        return response.json()
+
+    def password_reset(self, request_id):
+        url = self.base_url+'/password/'+request_id+'/reset?api_key='+self.api_key
+        response = requests.get(url)
+        return response.status_code
+
 def show_response(status, command, acc_id):
     if (status == 200):
         response = "success"
