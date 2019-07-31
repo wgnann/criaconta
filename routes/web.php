@@ -19,6 +19,11 @@ Route::get('/accounts/{id}/activate', 'AccountController@activateAccount');
 Route::get('/accounts/{id}/cancel', 'AccountController@cancelAccountRequest');
 Route::get('/accounts/todo', 'AccountController@todoAccounts');
 
+Route::get('/password', 'PasswordRequestController@index');
+Route::post('/password', 'PasswordRequestController@store')->name('password.renew');
+Route::get('/password/{id}/reset', 'PasswordRequestController@resetPassword');
+Route::get('/password/requests', 'PasswordRequestController@listRequests');
+
 Route::get('/institucional', 'InstitutionalAccountController@index');
 Route::post('/institucional/accounts', 'InstitutionalAccountController@store')->name('institutional.accounts');
 

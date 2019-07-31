@@ -17,5 +17,10 @@ return [
             'url'  => '/institucional',
             'can'  => 'institutional',
         ],
+        [
+            'text' => 'Recuperar senha',
+            'url' => '/password',
+            'can' => '',
+        ],
     ]
-];
+    ];
