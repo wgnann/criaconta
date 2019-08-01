@@ -25,6 +25,10 @@ class PasswordRequestController extends Controller
             ['user_id', Auth::user()->id],
             ['type', 'pessoal']
         ])->first();
+        if (!$account) {
+            die("conta não existente.");
+        }
+
         $password_request = PasswordRequest::where([
             ['account_id', $account->id],
             ['ativo', 1]
@@ -39,6 +43,10 @@ class PasswordRequestController extends Controller
             ['user_id', Auth::user()->id],
             ['type', 'pessoal']
         ])->first();
+        if (!$account) {
+            die("conta não existente.");
+        }
+
         $password_request = PasswordRequest::where([
             ['account_id', $account->id],
             ['ativo', 1]
