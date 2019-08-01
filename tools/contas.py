@@ -87,18 +87,36 @@ def mail(account, subject, template):
         smtp.starttls(context=context)
         smtp.send_message(message)
 
-def create_backend(account):
-    account['passwd'] = pwgen.pwgen()
-    home = "/home/%s/%s"%(account['group'], account['username'])
+def group_acl(account):
+    group = account['group']
+    username = account['username']
+    members = input("insira os membros separados por vírgula. (e.g. rick,astley,roll): ")
+    home = "/home/%s/%s"%(group, username)
+    k5login = ""
+    for member in members.split(','):
+        k5login += member+"@IME.USP.BR\n"
 
+    with open(home+"/.k5login", 'w') as file:
+        file.write(k5login)
+
+def create_backend(account):
+    group = account['group']
+    username = account['username']
+    account['passwd'] = pwgen.pwgen()
+    home = "/home/%s/%s"%(group, username)
     if(check(account) == 0):
         return 1
+
     add(account)
     os.chmod(home, 0o711)
     setquota(account)
-    password(account, 'add')
-    subscribe(account)
-    pykota(account)
+    if (account['type'] == 'institucional'):
+        print("Observações: %s"%(account['obs']))
+        group_acl(account)
+    else:
+        password(account, 'add')
+        subscribe(account)
+        pykota(account)
     mail(account, 'Pedido de criação de conta', 'create.txt')
 
     return 0
