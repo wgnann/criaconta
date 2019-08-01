@@ -47,6 +47,10 @@ class PasswordRequestController extends Controller
             die("conta não existente.");
         }
 
+        if (!$account->ativo) {
+            die("conta inativa.");
+        }
+
         $password_request = PasswordRequest::where([
             ['account_id', $account->id],
             ['ativo', 1]
