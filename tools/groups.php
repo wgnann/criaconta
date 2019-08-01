@@ -1,4 +1,5 @@
 <?php
+# rodar: php artisan tinker include tools/groups.php
 
 use App\Group;
 
@@ -18,6 +19,14 @@ $groups = [
     ['Pós Doutorado Estatística', 'posdocmae', 'ALUNOPD'],
     ['Pós Doutorado Matemática Aplicada', 'posdocmap', 'ALUNOPD'],
     ['Pós Doutorado Matemática', 'posdocmat', 'ALUNOPD'],
+    ['Graduação Computação', 'gradmac', 'ALUNOGR'],
+    ['Graduação Estatística', 'gradmae', 'ALUNOGR'],
+    ['Graduação Matemática Aplicada', 'gradmap', 'ALUNOGR'],
+    ['Graduação Matemática', 'posmat', 'ALUNOGR'],
+    ['Visitante Computação', 'guestmac', 'OUTRO'],
+    ['Visitante Estatística', 'guestmae', 'OUTRO'],
+    ['Visitante Matemática Aplicada', 'guestmap', 'OUTRO'],
+    ['Visitante Matemática', 'guestmat', 'OUTRO'],
     ['Institucional', 'spec', 'INSTITUCIONAL'],
 ];
 
@@ -26,7 +35,12 @@ foreach ($groups as $group) {
     $g->name = $group[0];
     $g->code = $group[1];
     $g->vinculo = $group[2];
-    if ($g->save()) {
-        echo "Adicionado: $g->code\n";
+    try {
+        if ($g->save()) {
+            echo "Adicionado: $g->code\n";
+        }
+    }
+    catch (Exception $e) {
+        echo $e->getMessage()."\n";
     }
 }

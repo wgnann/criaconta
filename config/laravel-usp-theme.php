@@ -18,6 +18,11 @@ return [
             'can'  => 'institutional',
         ],
         [
+            'text' => 'Conta local',
+            'url'  => '/local',
+            'can'  => 'institutional',
+        ],
+        [
             'text' => 'Recuperar senha',
             'url' => '/password',
             'can' => '',
