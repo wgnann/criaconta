@@ -4,71 +4,71 @@
 
 @section ('content')
   <div class="panel">
+    <h4>Conta pessoal</h4>
     @if ($account)
-      <h4>Informações da conta pessoal</h4>
-      <table class="table table-sm">
-      <tbody>
-        <tr>
-          <th>Responsável</th>
-          <td>{{ $account->user->nusp }}</td>
-        </tr>
-        <tr>
-          <th>username</th>
-          <td>{{ $account->username }}</td>
-        </tr>
-        <tr>
-          <th>Nome</th>
-          <td>{{ $account->name }}</td>
-        </tr>
-        <tr>
-          <th>Grupo</th>
-          <td>{{ $account->group->name }}</td>
-        </tr>
-        @if ($account->ativo)
-          <tr class="table-success">
-            <th>status</th>
-            <td>ativa</td>
-          </tr>
-        @else
-          <tr class="table-warning">
-            <th>status</th>
-            <td>não ativa</td>
-          </tr>
-        @endif
-      </tbody>
-      </table>
+      @if ($account->ativo)
+        <div class="border border-success my-1 p-1">
+          <h5 class="text-success">Conta ativa</h5>
+      @else
+        <div class="border border-danger my-1 p-1">
+          <h5 class="text-danger">Conta inativa</h5>
+      @endif
+          <table class="table table-sm table-borderless">
+            <tr>
+              <th>Responsável</th>
+              <td>{{ $account->user->nusp }}</td>
+            </tr>
+            <tr>
+              <th>username</th>
+              <td>{{ $account->username }}</td>
+            </tr>
+            <tr>
+              <th>Nome</th>
+              <td>{{ $account->name }}</td>
+            </tr>
+            <tr>
+              <th>Grupo</th>
+              <td>{{ $account->group->name }}</td>
+            </tr>
+          </table>
+        </div>
     @else
-      <h4>Conta não criada</h4>
       <form action="{{ route('accounts') }}" method="post">
         @csrf
-        <table class="table table-sm table-info">
-        <tbody>
-          <tr>
-            <th>NUSP</th>
-            <td>{{ Auth::user()->nusp }}</td>
-          </tr>
-          <tr>
-            <th>Nome</th>
-            <td>{{ Auth::user()->name }}</td>
-          </tr>
-          <tr>
-            <th>email</th>
-            <td>{{ Auth::user()->email }}</td>
-          </tr>
-          <tr>
-            <th>Grupo</th>
-            <td>
-              @foreach ($groups as $group)
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="group" value="{{ $group->id }}">
-                  <label class="form-check-label">{{ $group->name }}</label>
-                </div>
-              @endforeach
-            </td>
-          </tr>
-        </tbody>
-        </table>
-        <button type="submit" class="btn btn-primary">Criar</button>
+        <div class="border border-info my-1 p-1">
+          <h5 class="text-info">Criar conta pessoal</h5>
+          <table class="table table-sm table-borderless">
+            <tr>
+              <th>Número USP</th>
+              <td>{{ Auth::user()->nusp }}</td>
+            </tr>
+            <tr>
+              <th>Nome</th>
+              <td>{{ Auth::user()->name }}</td>
+            </tr>
+            <tr>
+              <th>Email</th>
+              <td>{{ Auth::user()->email }}</td>
+            </tr>
+            <tr>
+              <th>Grupo</th>
+              <td>
+                @foreach ($groups as $group)
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" id="group-{{ $group->id }}" name="group" value="{{ $group->id }}">
+                    <label class="form-check-label" for="group-{{ $group->id }}">{{ $group->name }}</label>
+                  </div>
+                @endforeach
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>
+                <button type="submit" class="btn btn-info">Criar</button>
+              </td>
+            </tr>
+          </table>
+        </div>
       </form>
     @endif
   </div>

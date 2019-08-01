@@ -4,7 +4,7 @@
 
 @section ('content')
   @auth
-    <h1>MUNDIAL</h1>
+    <h1>Sistema de criação de contas</h1>
   @else
     <div class="panel">
       Faça o <a href="/login/senhaunica">login</a>!

@@ -53,7 +53,7 @@ class AccountController extends Controller
         $account->group_id = $group->id;
         $account->save();
 
-        return redirect("/");
+        return redirect("/accounts");
     }
 
     public function todoAccounts(Request $request)
