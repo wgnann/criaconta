@@ -147,7 +147,7 @@ def interactive_mode():
             print(show(account))
 
         print("---")
-        option = input("\n  [t]odas as pessoais serão criadas\n  [c]riar uma conta específica\n  [n]ão criar alguma\n  default: sair\n\nopção: ")
+        option = input("\n  [t]odas as pessoais serão criadas\n  [c]riar uma conta específica\n  [a]tivar uma conta sem criá-la no backend\n  [n]ão criar alguma\n  default: sair\n\nopção: ")
         if (option == 't'):
             for account in todo:
                 if(account['group'] != "spec"):
@@ -164,6 +164,16 @@ def interactive_mode():
             status = api.cancel(acc_id)
             if (status == 200):
                 print("id: "+acc_id+" cancelado.\n")
+            elif (status == 404):
+                print("id: "+acc_id+" não encontrado.\n")
+            else:
+                print("comando inválido.\n")
+            input("pressione enter para retornar... ")
+        elif (option == 'a'):
+            acc_id = input("qual o id da conta para ativar? ")
+            status = api.activate(acc_id)
+            if (status == 200):
+                print("id: "+acc_id+" ativado.")
             elif (status == 404):
                 print("id: "+acc_id+" não encontrado.\n")
             else:
