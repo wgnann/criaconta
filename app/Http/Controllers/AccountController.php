@@ -110,4 +110,22 @@ class AccountController extends Controller
     {
         return $this->genericInactiveAccount($id, 'delete', $request);
     }
+
+    public function accountFromUsername($username, Request $request)
+    {
+        if (!$this->authAPI($request)) {
+            return response('Forbidden.', 403);
+        }
+
+        $account = Account::where([
+            ['username', $username],
+            ['ativo', 1]
+        ])->first();
+
+        if (!$account) {
+            return response('Not found.', 404);
+        }
+
+        return response()->json($account);
+    }
 }
