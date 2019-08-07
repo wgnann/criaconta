@@ -32,6 +32,15 @@ class CriaConta:
         response = requests.get(url)
         return response.status_code
 
+    def user_info(self, username):
+        url = self.base_url+'/accounts/'+username+'?api_key='+self.api_key
+        response = requests.get(url)
+
+        if (response.status_code == 200):
+            return (200, response.json())
+        else:
+            return (404, '{}')
+
 def show_response(status, command, acc_id):
     if (status == 200):
         response = "success"
@@ -39,7 +48,10 @@ def show_response(status, command, acc_id):
         response = "not found"
     else:
         response = "invalid command"
-    print (command+': id '+acc_id+': '+response)
+    if (command == "passwd"):
+        print(command+': request_id '+acc_id+': '+response)
+    else:
+        print(command+': id '+acc_id+': '+response)
 
 def main():
     parser = argparse.ArgumentParser()
@@ -56,19 +68,41 @@ def main():
     parser_cancel = subparsers.add_parser('cancel')
     parser_cancel.add_argument("id", type=int, help="id da conta a ser cancelada")
 
+    # passwd
+    parser_passwd = subparsers.add_parser('passwd')
+    parser_passwd.add_argument('request_id', type=int, nargs="?", help="id do pedido de renovação de conta")
+
+    # info
+    parser_info = subparsers.add_parser('info')
+    parser_info.add_argument('username', help="login do usuário")
+
     args = parser.parse_args()
     criaconta = CriaConta()
 
     if (args.command == "list"):
         todo = criaconta.list()
         for account in todo:
-            print (account)
+            print(account)
     elif (args.command == "activate"):
         status = criaconta.activate(str(args.id))
         show_response(status, args.command, str(args.id))
     elif (args.command == "cancel"):
         status = criaconta.cancel(str(args.id))
         show_response(status, args.command, str(args.id))
+    elif (args.command == "passwd"):
+        if (args.request_id != None):
+            status = criaconta.password_reset(str(args.request_id))
+            show_response(status, args.command, str(args.request_id))
+        else:
+            reqs = criaconta.password_requests()
+            for req in reqs:
+                print(req)
+    elif (args.command == "info"):
+        status, user = criaconta.user_info(args.username)
+        if (status == 404):
+            print(args.command+': username: '+args.username+': not found')
+        else:
+            print(user)
     else:
         print("modo inválido.")
 
