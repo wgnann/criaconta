@@ -12,7 +12,7 @@ class AccountController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except('todoAccounts', 'activateAccount', 'cancelAccountRequest');
+        $this->middleware('auth')->except('todoAccounts', 'activateAccount', 'cancelAccountRequest', 'accountFromUsername');
     }
 
     private function authAPI(Request $request)
