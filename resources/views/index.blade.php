@@ -4,10 +4,15 @@
 
 @section ('content')
   @auth
-    <h1>Sistema de criação de contas</h1>
+    <div class="panel">
+      <h4>Sistema de criação de contas</h4>
+      <p>Utilize o menu acima.</p>
+    </div>
   @else
     <div class="panel">
-      Faça o <a href="/login/senhaunica">login</a>!
+      <p>
+      Utilize o menu acima. Faça o <a href="/login/senhaunica">login</a>!
+      </p>
     </div>
   @endauth
 @endsection
