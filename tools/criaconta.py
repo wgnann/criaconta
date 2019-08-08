@@ -33,7 +33,7 @@ class CriaConta:
         return response.status_code
 
     def user_info(self, username):
-        url = self.base_url+'/accounts/'+username+'?api_key='+self.api_key
+        url = self.base_url+'/accounts/'+username+'/todo?api_key='+self.api_key
         response = requests.get(url)
 
         if (response.status_code == 200):
