@@ -45,8 +45,11 @@ Já o backend depende da API e dos parâmetros:
   * `KRB_ADD_PRINCIPAL`: principal do Kerberos utilizado para adicionar contas;
   * `KRB_ADD_KEYTAB`: localização da keytab associada ao principal correspondente;
   * `KRB_CPW_PRINCIPAL`: principal do Kerberos utilizado para renovar senhas;
-  * `KRB_ADD_KEYTAB`: localização da keytab associada ao principal correspondente;
+  * `KRB_CPW_KEYTAB`: localização da keytab associada ao principal correspondente;
+  * `KRB_DEL_PRINCIPAL`: principal do Kerberos utilizado para remover contas;
+  * `KRB_DEL_KEYTAB`: localização da keytab associada ao principal correspondente;
   * `PRINT_QUOTA`: quota de impressão geral, em páginas;
   * `PROF_PRINT_QUOTA`: quota de impressão para docentes, em páginas;
   * `SMTP_SERVER`: endereço do servidor de SMTP utilizado;
-  * `MAIL_SENDER`: endereço de email do remetente.
+  * `MAIL_SENDER`: endereço de email do remetente;
+  * `BACKUP_DIR`: diretório de backup no servidor de backup.
