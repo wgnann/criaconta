@@ -81,7 +81,7 @@ class AccountController extends Controller
         return response()->json($todo);
     }
 
-    private function genericInactiveAccount($id, $method, Request $request)
+    private function genericInactiveAccount($id, $active, $method, Request $request)
     {
         if (!$this->authAPI($request)) {
             return response('Forbidden.', 403);
@@ -89,7 +89,7 @@ class AccountController extends Controller
 
         $account = Account::where([
             ['id', $id],
-            ['ativo', 0]
+            ['ativo', $active]
         ])->first();
 
         if (!$account) {
@@ -103,12 +103,17 @@ class AccountController extends Controller
 
     public function activateAccount($id, Request $request)
     {
-        return $this->genericInactiveAccount($id, 'activate', $request);
+        return $this->genericInactiveAccount($id, 0, 'activate', $request);
     }
 
     public function cancelAccountRequest($id, Request $request)
     {
-        return $this->genericInactiveAccount($id, 'delete', $request);
+        return $this->genericInactiveAccount($id, 0, 'delete', $request);
+    }
+
+    public function deleteAccount($id, Request $request)
+    {
+        return $this->genericInactiveAccount($id, 1, 'delete', $request);
     }
 
     public function accountFromUsername($username, Request $request)
