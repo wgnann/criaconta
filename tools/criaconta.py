@@ -22,6 +22,11 @@ class CriaConta:
         response = requests.get(url)
         return response.status_code
 
+    def delete(self, acc_id):
+        url = self.base_url+'/accounts/'+acc_id+'/delete?api_key='+self.api_key
+        response = requests.get(url)
+        return response.status_code
+
     def password_requests(self):
         url = self.base_url+'/password/requests?api_key='+self.api_key
         response = requests.get(url)
@@ -68,6 +73,10 @@ def main():
     parser_cancel = subparsers.add_parser('cancel')
     parser_cancel.add_argument("id", type=int, help="id da conta a ser cancelada")
 
+    # delete
+    parser_delete = subparsers.add_parser('delete')
+    parser_delete.add_argument("id", type=int, help="id da conta a ser apagada")
+
     # passwd
     parser_passwd = subparsers.add_parser('passwd')
     parser_passwd.add_argument('request_id', type=int, nargs="?", help="id do pedido de renovação de conta")
@@ -88,6 +97,9 @@ def main():
         show_response(status, args.command, str(args.id))
     elif (args.command == "cancel"):
         status = criaconta.cancel(str(args.id))
+        show_response(status, args.command, str(args.id))
+    elif (args.command == "delete"):
+        status = criaconta.delete(str(args.id))
         show_response(status, args.command, str(args.id))
     elif (args.command == "passwd"):
         if (args.request_id != None):
