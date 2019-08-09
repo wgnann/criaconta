@@ -136,6 +136,46 @@ def create(account):
         else:
             print("comando inválido.\n")
 
+def pykota_del(account):
+    username = account['username']
+    return ssh("cups.ime.usp.br", "pkusers -d %s"%(username))
+
+def username_group(username):
+    group = subprocess.run(["id", "-gn", username], stdout=subprocess.PIPE)
+    if (group.returncode == 0):
+        return group.stdout.decode().strip()
+    else:
+        return None
+
+def backup_home(account):
+    username = account['username']
+    backup_dir = config('BACKUP_DIR')
+    home = "/home/%s/%s"%(account['group'], username)
+    ssh("nfs.ime.usp.br", "tar czf %s/%s.tar.gz %s"%(backup_dir, username, home))
+    return ssh("nfs.ime.usp.br", "ls -lash %s/%s.tar.gz"%(backup_dir, username))
+
+def user_del(account):
+    username = account['username']
+    principal = config('KRB_DEL_PRINCIPAL')
+    keytab = config('KRB_DEL_KEYTAB')
+    command = "delprinc %s"%(username)
+    subprocess.call(["/usr/sbin/smbldap-userdel", "-r", username])
+    return subprocess.call(["/usr/bin/kadmin", "-p", principal, "-k", "-t", keytab, "-q", command])
+
+def delete(account):
+    if (check(account) == 0):
+        print("vou apagar, hein?")
+        remover = input("diga sim: ")
+        if (remover == "sim"):
+            pykota_del(account)
+            backup_home(account)
+            user_del(account)
+            mail(account, 'Pedido de remoção de conta', 'delete.txt')
+        else:
+            print("remoção cancelada.\n")
+    else:
+        print("username: "+account['username']+" não encontrado no backend.\n")
+
 def interactive_mode():
     api = criaconta.CriaConta()
 
@@ -147,7 +187,7 @@ def interactive_mode():
             print(show(account))
 
         print("---")
-        option = input("\n  [t]odas as pessoais serão criadas\n  [c]riar uma conta específica\n  [a]tivar uma conta sem criá-la no backend\n  [n]ão criar alguma\n  default: sair\n\nopção: ")
+        option = input("\n  [t]odas as pessoais serão criadas\n  [c]riar uma conta específica\n  [a]tivar uma conta sem criá-la no backend\n  [n]ão criar alguma\n  [d]eletar uma conta\n  default: sair\n\nopção: ")
         if (option == 't'):
             for account in todo:
                 if(account['group'] != "spec"):
@@ -159,6 +199,16 @@ def interactive_mode():
                 if (acc_id == str(account['id'])):
                     create(account)
             input("pressione enter para retornar... ")
+        elif (option == 'a'):
+            acc_id = input("qual o id da conta para ativar? ")
+            status = api.activate(acc_id)
+            if (status == 200):
+                print("id: "+acc_id+" ativado.")
+            elif (status == 404):
+                print("id: "+acc_id+" não encontrado.\n")
+            else:
+                print("comando inválido.\n")
+            input("pressione enter para retornar... ")
         elif (option == 'n'):
             acc_id = input("qual o id da conta para não criar? ")
             status = api.cancel(acc_id)
@@ -169,15 +219,21 @@ def interactive_mode():
             else:
                 print("comando inválido.\n")
             input("pressione enter para retornar... ")
-        elif (option == 'a'):
-            acc_id = input("qual o id da conta para ativar? ")
-            status = api.activate(acc_id)
+        elif (option == 'd'):
+            username = input("qual o login da conta que será apagada? ")
+            status, account = api.user_info(username)
             if (status == 200):
-                print("id: "+acc_id+" ativado.")
+                delete(account)
             elif (status == 404):
-                print("id: "+acc_id+" não encontrado.\n")
-            else:
-                print("comando inválido.\n")
+                print("username: "+username+" não encontrado na API.\n")
+                remover = input("deseja tentar remover uma conta de fora da API? ")
+                if (remover.lower() == 's'):
+                    account = {
+                        'username': username,
+                        'group': username_group(username),
+                        'owner_email': username+'@ime.usp.br'
+                    }
+                    delete(account)
             input("pressione enter para retornar... ")
         else:
             break
