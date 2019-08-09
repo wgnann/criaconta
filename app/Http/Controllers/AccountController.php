@@ -126,6 +126,19 @@ class AccountController extends Controller
             return response('Not found.', 404);
         }
 
-        return response()->json($account);
+        $acc = [
+            'id' => $account->id,
+            'owner' => $account->user->nusp,
+            'owner_name' => $account->user->name,
+            'owner_email' => $account->user->email,
+            'owner_vinculo' => $account->user->vinculo,
+            'username'=> $account->username,
+            'group' => $account->group->code,
+            'name' => $account->name,
+            'type' => $account->type,
+            'obs' => $account->obs,
+        ];
+
+        return response()->json($acc);
     }
 }
