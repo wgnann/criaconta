@@ -224,6 +224,14 @@ def interactive_mode():
             status, account = api.user_info(username)
             if (status == 200):
                 delete(account)
+                acc_id = str(account['id'])
+                status = api.delete(acc_id)
+                if (status == 200):
+                    print("conta "+username+" apagada.")
+                elif (status == 404):
+                    print("conta "+username+" fracassou na API.")
+                else:
+                    print("comando inválido.\n")
             elif (status == 404):
                 print("username: "+username+" não encontrado na API.\n")
                 remover = input("deseja tentar remover uma conta de fora da API? ")
