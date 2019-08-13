@@ -17,7 +17,7 @@
       </ul>
 
       @can ('institutional')
-        <p>Mais informações disponíveis em: <a href="https://wiki.ime.usp.br/contas">https://wiki.ime.usp.br/contas</a>.</p>
+        <p>Mais informações disponíveis em: <a href="https://wiki.ime.usp.br/servicos:contas">https://wiki.ime.usp.br/servicos:contas</a>.</p>
       @endcan
     </div>
   @else
