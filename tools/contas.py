@@ -104,6 +104,8 @@ def create_backend(account):
     username = account['username']
     account['passwd'] = pwgen.pwgen()
     home = "/home/%s/%s"%(group, username)
+    mail_body = "create.txt"
+
     if(check(account) == 0):
         return 1
 
@@ -113,11 +115,12 @@ def create_backend(account):
     if (account['type'] == 'institucional'):
         print("Observações: %s"%(account['obs']))
         group_acl(account)
+        mail_body = "create_group.txt"
     else:
         password(account, 'add')
         subscribe(account)
         pykota(account)
-    mail(account, 'Pedido de criação de conta', 'create.txt')
+    mail(account, 'Pedido de criação de conta', mail_body)
 
     return 0
 
