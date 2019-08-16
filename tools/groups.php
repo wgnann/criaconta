@@ -22,7 +22,7 @@ $groups = [
     ['Graduação Computação', 'gradmac', 'ALUNOGR'],
     ['Graduação Estatística', 'gradmae', 'ALUNOGR'],
     ['Graduação Matemática Aplicada', 'gradmap', 'ALUNOGR'],
-    ['Graduação Matemática', 'posmat', 'ALUNOGR'],
+    ['Graduação Matemática', 'gradmat', 'ALUNOGR'],
     ['Visitante Computação', 'guestmac', 'OUTRO'],
     ['Visitante Estatística', 'guestmae', 'OUTRO'],
     ['Visitante Matemática Aplicada', 'guestmap', 'OUTRO'],
