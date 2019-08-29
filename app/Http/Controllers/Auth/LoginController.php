@@ -79,7 +79,12 @@ class LoginController extends Controller
 
         $vinculos = [];
         foreach ($userSenhaUnica->vinculo as $vinculo) {
-            if ($vinculo['siglaUnidade'] == "IME") {
+            if ($vinculo['tipoVinculo'] == "SERVIDOR") {
+                if ($vinculo['siglaUnidade'] == "IME") {
+                    $vinculos[] = $vinculo['tipoVinculo'];
+                }
+            }
+            else {
                 $vinculos[] = $vinculo['tipoVinculo'];
             }
         }
