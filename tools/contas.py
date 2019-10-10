@@ -118,7 +118,6 @@ def create_backend(account):
         mail_body = "create_group.txt"
     else:
         password(account, 'add')
-        subscribe(account)
         pykota(account)
     mail(account, 'Pedido de criação de conta', mail_body)
 
@@ -252,6 +251,7 @@ def interactive_mode():
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--passwd', action='store_true', help="processa todos os pedidos de recuperação de senha")
+    parser.add_argument('--create', action='store_true', help="processa todos os pedidos de criação de conta")
     args = parser.parse_args()
 
     if (args.passwd):
@@ -270,6 +270,13 @@ def main():
                 print("conta "+username+" fracassou na API.")
             else:
                 print("comando inválido.\n")
+    elif (args.create):
+        api = criaconta.CriaConta()
+        todo = api.list()
+        for account in todo:
+            if(account['group'] != "spec"):
+                print(show(account))
+                create(account)
     else:
         interactive_mode()
 
