@@ -28,6 +28,12 @@ $groups = [
     ['Visitante Matemática Aplicada', 'guestmap', 'OUTRO'],
     ['Visitante Matemática', 'guestmat', 'OUTRO'],
     ['Institucional', 'spec', 'INSTITUCIONAL'],
+    ['Estagiário', 'func', 'ESTAGIARIORH'],
+    ['Graduação Computação', 'gradmac', 'OUTRO'],
+    ['Graduação Estatística', 'gradmae', 'OUTRO'],
+    ['Graduação Matemática Aplicada', 'gradmap', 'OUTRO'],
+    ['Graduação Matemática', 'gradmat', 'OUTRO'],
+    ['Estagiário', 'func', 'OUTRO']
 ];
 
 foreach ($groups as $group) {
