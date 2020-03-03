@@ -102,7 +102,7 @@ def group_acl(account):
 def create_backend(account):
     group = account['group']
     username = account['username']
-    account['passwd'] = pwgen.pwgen()
+    account['passwd'] = pwgen.pwgen(12)
     home = "/home/%s/%s"%(group, username)
     mail_body = "create.txt"
 
