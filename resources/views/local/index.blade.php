@@ -18,7 +18,7 @@
         <div class="form-group col">
           <label for="username">Login</label>
           <div class="input-group">
-            <input class="form-control" type="text" id="username" name="username" placeholder="usuário" />
+            <input class="form-control" type="text" id="username" name="username" placeholder="usuário" pattern="[A-Za-z0-9]*" title="Apenas letras ou números"/>
             <div class="input-group-append">
               <span class="input-group-text">-local</span>
             </div>
