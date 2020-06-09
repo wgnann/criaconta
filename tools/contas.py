@@ -114,8 +114,7 @@ def create_backend(account):
     setquota(account)
     if (account['type'] == 'institucional'):
         print("Observações: %s"%(account['obs']))
-        group_acl(account)
-        mail_body = "create_group.txt"
+        password(account, 'add')
     else:
         password(account, 'add')
         pykota(account)
