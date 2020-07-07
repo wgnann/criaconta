@@ -51,5 +51,7 @@ Já o backend depende da API e dos parâmetros:
   * `PRINT_QUOTA`: quota de impressão geral, em páginas;
   * `PROF_PRINT_QUOTA`: quota de impressão para docentes, em páginas;
   * `SMTP_SERVER`: endereço do servidor de SMTP utilizado;
+  * `SMTP_USER`: usuário de SMTP AUTH;
+  * `SMTP_PASS`: senha de SMTP AUTH;
   * `MAIL_SENDER`: endereço de email do remetente;
   * `BACKUP_DIR`: diretório de backup no servidor de backup.
