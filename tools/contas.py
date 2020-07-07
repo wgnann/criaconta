@@ -74,6 +74,8 @@ def mail(account, subject, template):
     receiver = account['owner_email']
     server = config('SMTP_SERVER')
     sender = config('MAIL_SENDER')
+    smtpuser = config('SMTP_USER')
+    smtppass = config('SMTP_PASS')
     content = open(template, 'r').read()
 
     message = EmailMessage()
@@ -85,7 +87,7 @@ def mail(account, subject, template):
     context = ssl.create_default_context()
     with smtplib.SMTP(server, 25) as smtp:
         smtp.starttls(context=context)
-        smtp.login(SMTP_USER, SMTP_PASS)
+        smtp.login(smtpuser, smtppass)
         smtp.send_message(message)
 
 def group_acl(account):
