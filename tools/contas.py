@@ -109,10 +109,12 @@ def create_backend(account):
     home = "/home/%s/%s"%(group, username)
     mail_body = "create.txt"
 
-    if(check(account) == 0):
+    if (check(account) == 0):
         return 1
 
-    add(account)
+    if (add(account) != 0):
+        return 1
+
     os.chmod(home, 0o711)
     setquota(account)
     if (account['type'] == 'institucional'):
