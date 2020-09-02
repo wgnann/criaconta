@@ -213,8 +213,7 @@ def interactive_mode():
         option = input("\n  [t]odas as pessoais serão criadas\n  [c]riar uma conta específica\n  [a]tivar uma conta sem criá-la no backend\n  [n]ão criar alguma\n  [d]eletar uma conta\n  default: sair\n\nopção: ")
         if (option == 't'):
             for account in todo:
-                if(account['group'] != "spec"):
-                    create(account)
+                create(account)
             break
         elif (option == 'c'):
             acc_id = input("qual o id da conta que será criada? ")
@@ -295,9 +294,8 @@ def main():
         api = criaconta.CriaConta()
         todo = api.list()
         for account in todo:
-            if(account['group'] != "spec"):
-                print(show(account))
-                create(account)
+            print(show(account))
+            create(account)
     else:
         interactive_mode()
 
