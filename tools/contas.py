@@ -1,6 +1,8 @@
 import argparse
 import criaconta
+import grp
 import os
+import pwd
 import pwgen
 import smtplib
 import ssl
@@ -22,9 +24,14 @@ def ssh(host, command):
     run = ["/usr/bin/ssh", "-l", "root", host]+command.split()
     return subprocess.call(run)
 
-def check(account):
+def check(account, noout=False):
     username = account['username']
-    return subprocess.call(["/usr/sbin/smbldap-usershow", username])
+    stdout = None
+
+    if (noout):
+        stdout = subprocess.DEVNULL
+
+    return subprocess.call(["/usr/sbin/smbldap-usershow", username], stdout=stdout)
 
 def add(account):
     username = account['username']
@@ -105,12 +112,22 @@ def group_acl(account):
 def create_backend(account):
     group = account['group']
     username = account['username']
+    name = unidecode.unidecode(account['name'])
     account['passwd'] = pwgen.pwgen(12)
     home = "/home/%s/%s"%(group, username)
     mail_body = "create.txt"
 
-    if (check(account) == 0):
-        return 1
+    if (check(account, noout=True) == 0):
+        local_account = pwd.getpwnam(username)
+        local_name = local_account.pw_gecos
+        local_group = grp.getgrgid(local_account.pw_gid).gr_name
+
+        if (name == local_name and group == local_group):
+            return 0
+        else:
+            print("grupo: %s:%s"%(group, local_group))
+            print("%s\n%s"%(name, local_name))
+            return 1
 
     if (add(account) != 0):
         return 1
