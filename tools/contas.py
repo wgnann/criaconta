@@ -39,7 +39,17 @@ def add(account):
     group = account['group']
     skel = config('SKEL_DIR')
     home = "/home/%s/%s"%(group, username)
-    return subprocess.call(["/usr/sbin/smbldap-useradd", "-a", "-c", name, "-d", home, "-g", group, "-k", skel, "-m", username])
+    ret = subprocess.call(["/usr/sbin/smbldap-useradd", "-a", "-c", name, "-d", home, "-g", group, username])
+    if (ret != 0):
+        return ret
+    # man rsync "trailing slash"
+    skeldir = "%s/"%(skel)
+    target = "root@nfs.ime.usp.br:%s"%(home)
+    ret = subprocess.call(["/usr/bin/rsync", "-r", skeldir, target])
+    if (ret != 0):
+        return ret
+    ssh("nfs.ime.usp.br", "chmod 711 %s"%(home))
+    return ssh("nfs.ime.usp.br", "chown -R %s: %s"%(username, home))
 
 def setquota(account):
     username = account['username']
@@ -132,7 +142,6 @@ def create_backend(account):
     if (add(account) != 0):
         return 1
 
-    os.chmod(home, 0o711)
     setquota(account)
     if (account['type'] == 'institucional'):
         print("Observações: %s"%(account['obs']))
@@ -174,15 +183,15 @@ def backup_home(account):
     username = account['username']
     backup_dir = config('BACKUP_DIR')
     home = "/home/%s/%s"%(account['group'], username)
-    ssh("nfs.ime.usp.br", "tar czf %s/%s.tar.gz %s"%(backup_dir, username, home))
-    return ssh("nfs.ime.usp.br", "ls -lash %s/%s.tar.gz"%(backup_dir, username))
+    ssh("nfs.ime.usp.br", "mv %s %s"%(home, backup_dir))
+    return ssh("nfs.ime.usp.br", "ls -lashd %s/%s"%(backup_dir, username))
 
 def user_del(account):
     username = account['username']
     principal = config('KRB_DEL_PRINCIPAL')
     keytab = config('KRB_DEL_KEYTAB')
     command = "delprinc %s"%(username)
-    subprocess.call(["/usr/sbin/smbldap-userdel", "-r", username])
+    subprocess.call(["/usr/sbin/smbldap-userdel", username])
     return subprocess.call(["/usr/bin/kadmin", "-p", principal, "-k", "-t", keytab, "-q", command])
 
 def delete(account):
