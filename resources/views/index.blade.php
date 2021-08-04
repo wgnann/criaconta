@@ -3,6 +3,7 @@
 @section ('title') Cria Conta - IME-USP @endsection
 
 @section ('content')
+  @include('flash')
   @auth
     <div class="panel">
       <h4>Sistema de criação de contas</h4>
