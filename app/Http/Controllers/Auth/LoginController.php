@@ -94,12 +94,12 @@ class LoginController extends Controller
         if ($vinculo != "SERVIDOR") {
             $emailIME = IDMail::find_email($nusp);
             if ($emailIME == null) {
-                request()->session()->flash('alert-info','Email @ime.usp.br não encontrado');
+                request()->session()->flash('alert-danger','Email @ime.usp.br não encontrado');
             }
         }
 
         if (!$vinculos) {
-            request()->session()->flash('alert-info','Não há vínculos com o IME');
+            request()->session()->flash('alert-danger','Não há vínculos com o IME');
             return redirect('/');
         }
 
