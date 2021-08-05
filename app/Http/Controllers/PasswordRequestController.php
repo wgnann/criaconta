@@ -26,7 +26,8 @@ class PasswordRequestController extends Controller
             ['type', 'pessoal']
         ])->first();
         if (!$account) {
-            die("conta não existente.");
+            request()->session()->flash('alert-danger','Email @ime.usp.br não encontrado');
+            return redirect('/');
         }
 
         $password_request = PasswordRequest::where([

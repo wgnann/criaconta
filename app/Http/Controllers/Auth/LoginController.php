@@ -95,6 +95,7 @@ class LoginController extends Controller
             $emailIME = IDMail::find_email($nusp);
             if ($emailIME == null) {
                 request()->session()->flash('alert-danger','Email @ime.usp.br não encontrado');
+                return redirect('/');
             }
         }
 
