@@ -24,7 +24,10 @@
   @else
     <div class="panel">
       <p>
-      Estudante de pós-graduação: ter um email IME é requisito <strong>necessário</strong> para fazer sua conta para o laboratório da Rede IME. O email pode ser criado em: <a href="https://id.usp.br">id.usp.br</a>.
+      Estudante de pós-graduação: ter um email IME é requisito <strong>necessário</strong> para fazer sua conta para o laboratório da Rede IME.
+      </p>
+      <p>O email pode ser criado em: <a href="https://id.usp.br">id.usp.br</a>.
+      </p>
       </p>
       <p>
       Faça o <a href="/login/senhaunica">login</a>!
