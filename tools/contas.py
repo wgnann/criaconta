@@ -71,11 +71,6 @@ def password(account, mode):
         command = "cpw -pw %s %s"%(passwd, username)
     return subprocess.call(["/usr/bin/kadmin", "-p", principal, "-k", "-t", keytab, "-q", command])
 
-def subscribe(account):
-    email = account['username']+'@ime.usp.br'
-    group = 'g-'+account['group']
-    return ssh("lists.ime.usp.br", "echo %s | add_members -r - -a n -w n %s"%(email, group))
-
 def pykota(account):
     username = account['username']
     group = account['group']
@@ -106,18 +101,6 @@ def mail(account, subject, template):
         smtp.starttls(context=context)
         smtp.login(smtpuser, smtppass)
         smtp.send_message(message)
-
-def group_acl(account):
-    group = account['group']
-    username = account['username']
-    members = input("insira os membros separados por vírgula. (e.g. rick,astley,roll): ")
-    home = "/home/%s/%s"%(group, username)
-    k5login = ""
-    for member in members.split(','):
-        k5login += member+"@IME.USP.BR\n"
-
-    with open(home+"/.k5login", 'w') as file:
-        file.write(k5login)
 
 def create_backend(account):
     group = account['group']
