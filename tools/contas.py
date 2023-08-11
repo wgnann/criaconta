@@ -49,6 +49,7 @@ def add(account):
     if (ret != 0):
         return ret
     ssh("nfs.ime.usp.br", "chmod 711 %s"%(home))
+    ssh("nfs.ime.usp.br", "/usr/sbin/service nslcd force-reload")
     return ssh("nfs.ime.usp.br", "chown -R %s: %s"%(username, home))
 
 def setquota(account):
@@ -102,11 +103,14 @@ def mail(account, subject, template):
         smtp.login(smtpuser, smtppass)
         smtp.send_message(message)
 
+def create_password():
+    return pwgen.pwgen(12)
+
 def create_backend(account):
     group = account['group']
     username = account['username']
     name = unidecode.unidecode(account['name'])
-    account['passwd'] = pwgen.pwgen(12)
+    account['passwd'] = create_password()
     home = "/home/%s/%s"%(group, username)
     mail_body = "create.txt"
 
@@ -272,7 +276,7 @@ def main():
         for request in todo:
             request_id = str(request['id'])
             username = request['username']
-            request['passwd'] = pwgen.pwgen()
+            request['passwd'] = create_password()
             password(request, 'cpw')
             mail(request, 'Recuperação de senha', 'passwd.txt')
             status = api.password_reset(request_id)
