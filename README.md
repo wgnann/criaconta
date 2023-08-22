@@ -1,6 +1,4 @@
-## Dependências
-  * [uspdev/laravel-usp-theme](https://github.com/uspdev/laravel-usp-theme)
-  * [uspdev/senhaunica-socialite](https://github.com/uspdev/senhaunica-socialite)
+## Dependências fora do composer
   * [idmail](https://github.com/wgnann/idmail)
 
 ## Como configurar o acesso via API
@@ -12,22 +10,57 @@
   * `accounts/{id}/activate`: ativa uma dada conta;
   * `accounts/{id}/cancel`: cancela um pedido de conta.
 
-## Como instalar o IDMail
-Para instalar IDMail no laravel, basta:
-  * copiá-lo para o diretório app/Tools ou outro preferido;
-  * adicioná-lo no namespace.
+## Deployment
+```console
+# tudo aqui assume estar no diretório recém clonado
 
-É necessário um arquivo `.env` contendo as variáveis:
-  * `LOGIN`
-  * `PASSWORD`
+cp .env.example .env
+# consertar o que for relevante:
+#  - APP_URL
+#  - DB
+#  - SENHAUNICA
+#  - IDMAIL
 
-## Grupos
-Não dispomos de uma interface web para adicionar grupos. Por ora, o procedimento é criar os grupos como no [exemplo](tools/groups.php).
+# primeira tentativa
+composer install
 
-Para usá-lo, rodar o `php artisan tinker` e:
-```php
-require('tools/group.php')
-Group::all()
+# gambi
+# editar vendor/laravel/framework/src/Illuminate/Foundation/PackageManifest.php
+# trocar, na linha 116
+    $packages = json_decode($this->files->get($path), true);
+# por
+    $installed = json_decode($this->files->get($path), true);
+    $packages = $installed['packages'] ?? $installed;
+
+# composer de fato
+composer install
+
+# gerar chave
+php artisan key:generate
+
+# publicar os assets
+mkdir -p public/vendor/laravel-usp-theme
+cp -r vendor/uspdev/laravel-usp-theme/resources/assets/* public/vendor/laravel-usp-theme
+
+# banco de dados
+touch database/database.sqlite
+php artisan migrate
+php artisan tinker
+
+# no tinker
+    require('tools/groups.php')
+
+# idmail
+mkdir app/Tools
+curl https://raw.githubusercontent.com/wgnann/idmail/master/IDMail.php | sed 's/<?php/<?php\n\nnamespace App\\Tools;/g' > app/Tools/IDMail.php
+
+# senhaunica-socialite (dev)
+# trocar bc.ime.usp.br pelo seu endereço
+sed -i 's|https://uspdigital.usp.br|http://bc.ime.usp.br:8080|' vendor/uspdev/senhaunica-socialite/src/Server.php
+
+# senhaunica-faker
+# tomar cuidado que o callback padrão aqui muda
+# muda de /callback para /login/senhaunica/callback
 ```
 
 ## Utilitário de terminal
