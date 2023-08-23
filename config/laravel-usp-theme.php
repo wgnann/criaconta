@@ -3,9 +3,9 @@
 return [
     'title'=> 'Cria Conta',
     'dashboard_url' => '/',
-    'logout_method' => 'GET',
+    'logout_method' => 'POST',
     'logout_url' => 'logout',
-    'login_url' => 'login/senhaunica',
+    'login_url' => 'login',
     'menu' => [
         [
             'text' => 'Conta pessoal',

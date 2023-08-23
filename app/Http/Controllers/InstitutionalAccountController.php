@@ -18,7 +18,7 @@ class InstitutionalAccountController extends Controller
 
     public function index()
     {
-        $nusp = Auth::user()->nusp;
+        $nusp = Auth::user()->codpes;
         $accounts = IDMail::find_lists($nusp);
         $active = [];
         $queued = [];

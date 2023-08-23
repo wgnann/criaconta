@@ -40,7 +40,7 @@ class AccountController extends Controller
             die("grupo não encontrado.");
         }
 
-        $email = IDMail::find_email($user->nusp);
+        $email = IDMail::find_email($user->codpes);
         if ($email == null) {
             die("email não encontrado.");
         }
@@ -67,7 +67,7 @@ class AccountController extends Controller
         foreach ($accounts as $account) {
             array_push($todo, [
                 'id' => $account->id,
-                'owner' => $account->user->nusp,
+                'owner' => $account->user->codpes,
                 'owner_name' => $account->user->name,
                 'owner_email' => $account->user->email,
                 'owner_vinculo' => $account->user->vinculo,
@@ -133,7 +133,7 @@ class AccountController extends Controller
 
         $acc = [
             'id' => $account->id,
-            'owner' => $account->user->nusp,
+            'owner' => $account->user->codpes,
             'owner_name' => $account->user->name,
             'owner_email' => $account->user->email,
             'owner_vinculo' => $account->user->vinculo,

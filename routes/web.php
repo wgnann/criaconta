@@ -31,7 +31,3 @@ Route::post('/institucional/accounts', 'InstitutionalAccountController@store')->
 
 Route::get('/local', 'LocalAccountController@index');
 Route::post('/local/accounts', 'LocalAccountController@store')->name('local.accounts');
-
-Route::get('/login/senhaunica', 'Auth\LoginController@redirectToProvider')->name('login');
-Route::get('/login/senhaunica/callback', 'Auth\LoginController@handleProviderCallback');
-Route::get('/logout', 'Auth\LoginController@logout');
