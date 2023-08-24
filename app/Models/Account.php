@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,7 +13,7 @@ class Account extends Model
 
     public function group()
     {
-        return $this->belongsTo('App\Group');
+        return $this->belongsTo('App\Models\Group');
     }
 
     public function activate()

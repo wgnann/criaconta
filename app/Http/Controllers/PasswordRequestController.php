@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Account;
-use App\PasswordRequest;
+use App\Models\Account;
+use App\Models\PasswordRequest;
 use Auth;
 use Illuminate\Http\Request;
 

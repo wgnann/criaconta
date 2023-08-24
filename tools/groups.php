@@ -1,7 +1,7 @@
 <?php
 # rodar: php artisan tinker include tools/groups.php
 
-use App\Group;
+use App\Models\Group;
 
 $groups = [
     ['Funcionário', 'func', 'SERVIDOR'],

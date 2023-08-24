@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Account;
-use App\Group;
+use App\Models\Account;
+use App\Models\Group;
 use App\Tools\IDMail;
 use Auth;
 use Illuminate\Http\Request;
