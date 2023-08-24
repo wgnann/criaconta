@@ -38,4 +38,25 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function vinculo() {
+        $vinculos = [
+            "Alunopd",
+            "Alunogr",
+            "Alunopos",
+            "Estagiario",
+            "Docente",
+            "Servidor"
+        ];
+
+        $vinculo = "Outro";
+
+        foreach ($vinculos as $v) {
+            if ($this->hasPermissionTo($v, 'senhaunica')) {
+                $vinculo = $v;
+            }
+        }
+
+        return $vinculo;
+    }
 }

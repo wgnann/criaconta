@@ -26,7 +26,7 @@ class AccountController extends Controller
             ['user_id', Auth::user()->id],
             ['type', 'pessoal']
         ])->first();
-        $groups = Group::where('vinculo', Auth::user()->vinculo)->get();
+        $groups = Group::where('vinculo', Auth::user()->vinculo())->get();
         return view('account.index', compact('account', 'groups'));
     }
 
@@ -70,7 +70,7 @@ class AccountController extends Controller
                 'owner' => $account->user->codpes,
                 'owner_name' => $account->user->name,
                 'owner_email' => $account->user->email,
-                'owner_vinculo' => $account->user->vinculo,
+                'owner_vinculo' => $account->user->vinculo(),
                 'username'=> $account->username,
                 'group' => $account->group->code,
                 'name' => $account->name,
@@ -136,7 +136,7 @@ class AccountController extends Controller
             'owner' => $account->user->codpes,
             'owner_name' => $account->user->name,
             'owner_email' => $account->user->email,
-            'owner_vinculo' => $account->user->vinculo,
+            'owner_vinculo' => $account->user->vinculo(),
             'username'=> $account->username,
             'group' => $account->group->code,
             'name' => $account->name,

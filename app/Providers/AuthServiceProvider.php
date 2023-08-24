@@ -26,7 +26,7 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Gate::define('institutional', function ($user) {
-            return $user->vinculo == 'SERVIDOR';
+            return $user->hasPermissionTo('Servidor', 'senhaunica') || $user->hasPermissionTo('Docente', 'senhaunica');
         });
     }
 }

@@ -95,7 +95,7 @@ class PasswordRequestController extends Controller
         foreach ($password_requests as $pr) {
             array_push($request_list, [
                 'id' => $pr->id,
-                'owner' => $pr->account->user->nusp,
+                'owner' => $pr->account->user->codpes,
                 'owner_name' => $pr->account->user->name,
                 'owner_email' => $pr->account->user->email,
                 'username' => $pr->account->username

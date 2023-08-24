@@ -16,7 +16,7 @@
           <table class="table table-sm table-borderless">
             <tr>
               <th>Responsável</th>
-              <td>{{ $account->user->nusp }}</td>
+              <td>{{ $account->user->codpes }}</td>
             </tr>
             <tr>
               <th>username</th>
@@ -40,7 +40,7 @@
           <table class="table table-sm table-borderless">
             <tr>
               <th>Número USP</th>
-              <td>{{ Auth::user()->nusp }}</td>
+              <td>{{ Auth::user()->codpes }}</td>
             </tr>
             <tr>
               <th>Nome</th>

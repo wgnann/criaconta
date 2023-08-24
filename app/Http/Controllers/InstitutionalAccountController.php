@@ -50,7 +50,7 @@ class InstitutionalAccountController extends Controller
         # grupo é sempre spec
         $group = Group::where('code', 'spec')->first();
 
-        $todo = IDMail::find_lists($user->nusp);
+        $todo = IDMail::find_lists($user->codpes);
         foreach ($todo as $todo_account) {
             $username = explode("@", $todo_account['email'])[0];
             $local_account = Account::where('username', $username)->first();
