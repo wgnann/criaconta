@@ -1,31 +1,50 @@
 <?php
 
+$right_menu = [
+    [
+        // menu utilizado para views da biblioteca senhaunica-socialite.
+        'key' => 'senhaunica-socialite',
+    ],
+    [
+        'text' => '<i class="fas fa-hard-hat"></i>',
+        'title' => 'Logs',
+        'target' => '_blank',
+        'url' => config('app.url').'/logs',
+        'align' => 'right',
+        'can' => 'admin',
+    ],
+];
+
+$menu = [
+    [
+        'text' => 'Conta pessoal',
+        'url' => '/accounts',
+        'can' => '',
+    ],
+    [
+        'text' => 'Conta institucional',
+        'url'  => '/institucional',
+        'can'  => 'institutional',
+    ],
+    [
+        'text' => 'Conta local',
+        'url'  => '/local',
+        'can'  => 'institutional',
+    ],
+    [
+        'text' => 'Recuperar senha',
+        'url' => '/password',
+        'can' => '',
+    ],
+];
+
 return [
-    'title'=> 'Cria Conta',
-    'dashboard_url' => '/',
+    'title'=> config('app.name'),
+    'app_url' => config('app.url'),
     'logout_method' => 'POST',
     'logout_url' => 'logout',
     'login_url' => 'login',
-    'menu' => [
-        [
-            'text' => 'Conta pessoal',
-            'url' => '/accounts',
-            'can' => '',
-        ],
-        [
-            'text' => 'Conta institucional',
-            'url'  => '/institucional',
-            'can'  => 'institutional',
-        ],
-        [
-            'text' => 'Conta local',
-            'url'  => '/local',
-            'can'  => 'institutional',
-        ],
-        [
-            'text' => 'Recuperar senha',
-            'url' => '/password',
-            'can' => '',
-        ],
-    ]
-    ];
+    'menu' => $menu,
+    'right_menu' => $right_menu,
+];
+
