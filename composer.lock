@@ -5930,16 +5930,16 @@
         },
         {
             "name": "uspdev/senhaunica-socialite",
-            "version": "4.3.5",
+            "version": "4.3.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/uspdev/senhaunica-socialite.git",
-                "reference": "b115b192e03e6e71ac1ffc81ee1524e08b0f5e3f"
+                "reference": "7240de2396e0f553c909176f151ec4fc727ce796"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/uspdev/senhaunica-socialite/zipball/b115b192e03e6e71ac1ffc81ee1524e08b0f5e3f",
-                "reference": "b115b192e03e6e71ac1ffc81ee1524e08b0f5e3f",
+                "url": "https://api.github.com/repos/uspdev/senhaunica-socialite/zipball/7240de2396e0f553c909176f151ec4fc727ce796",
+                "reference": "7240de2396e0f553c909176f151ec4fc727ce796",
                 "shasum": ""
             },
             "require": {
@@ -5980,9 +5980,9 @@
             "homepage": "https://github.com/uspdev/senhaunica-socialite",
             "support": {
                 "issues": "https://github.com/uspdev/senhaunica-socialite/issues",
-                "source": "https://github.com/uspdev/senhaunica-socialite/tree/4.3.5"
+                "source": "https://github.com/uspdev/senhaunica-socialite/tree/4.3.6"
             },
-            "time": "2023-06-26T12:41:30+00:00"
+            "time": "2023-08-17T13:38:29+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
