@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use App\Tools\IDMail;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -27,6 +28,17 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::define('institutional', function ($user) {
             return $user->hasPermissionTo('Servidor', 'senhaunica') || $user->hasPermissionTo('Docente', 'senhaunica');
+        });
+
+        Gate::define('email', function ($user) {
+            if ($user == null)
+                return false;
+
+            $emailIME = IDMail::find_email($user->codpes);
+            if ($emailIME == null)
+                return false;
+
+            return true;
         });
     }
 }
