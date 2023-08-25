@@ -18,49 +18,22 @@ cp .env.example .env
 # consertar o que for relevante:
 #  - APP_URL
 #  - DB
+#  - API_KEY
 #  - SENHAUNICA
 #  - IDMAIL
 
-# primeira tentativa
-composer install
-
-# gambi
-# editar vendor/laravel/framework/src/Illuminate/Foundation/PackageManifest.php
-# trocar, na linha 116
-    $packages = json_decode($this->files->get($path), true);
-# por
-    $installed = json_decode($this->files->get($path), true);
-    $packages = $installed['packages'] ?? $installed;
-
-# composer de fato
 composer install
 
 # gerar chave
 php artisan key:generate
 
-# publicar os assets
-mkdir -p public/vendor/laravel-usp-theme
-cp -r vendor/uspdev/laravel-usp-theme/resources/assets/* public/vendor/laravel-usp-theme
-
 # banco de dados
 touch database/database.sqlite
-php artisan migrate
-php artisan tinker
-
-# no tinker
-    require('tools/groups.php')
+php artisan migrate:fresh --seed
 
 # idmail
 mkdir app/Tools
 curl https://raw.githubusercontent.com/wgnann/idmail/master/IDMail.php | sed 's/<?php/<?php\n\nnamespace App\\Tools;/g' > app/Tools/IDMail.php
-
-# senhaunica-socialite (dev)
-# trocar bc.ime.usp.br pelo seu endereço
-sed -i 's|https://uspdigital.usp.br|http://bc.ime.usp.br:8080|' vendor/uspdev/senhaunica-socialite/src/Server.php
-
-# senhaunica-faker
-# tomar cuidado que o callback padrão aqui muda
-# muda de /callback para /login/senhaunica/callback
 ```
 
 ## Utilitário de terminal
