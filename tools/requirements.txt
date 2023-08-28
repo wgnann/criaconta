@@ -1,0 +1,4 @@
+pwgen
+python-decouple
+requests
+unidecode

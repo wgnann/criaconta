@@ -11,6 +11,8 @@ import unidecode
 from decouple import config
 from email.message import EmailMessage
 
+from message import message
+
 def show(account):
     acc_id = account['id']
     username = account['username']
@@ -148,12 +150,7 @@ def create(account):
         print("conta "+username+" fracassou no backend.")
     else:
         status = api.activate(acc_id)
-        if (status == 200):
-            print("conta "+username+" criada.")
-        elif (status == 404):
-            print("conta "+username+" fracassou na API.")
-        else:
-            print("comando inválido.\n")
+        message(status, "c", username)
 
 def pykota_del(account):
     username = account['username']
@@ -216,27 +213,15 @@ def interactive_mode():
             for account in todo:
                 if (acc_id == str(account['id'])):
                     create(account)
-            input("pressione enter para retornar... ")
+                    break
         elif (option == 'a'):
             acc_id = input("qual o id da conta para ativar? ")
             status = api.activate(acc_id)
-            if (status == 200):
-                print("id: "+acc_id+" ativado.")
-            elif (status == 404):
-                print("id: "+acc_id+" não encontrado.\n")
-            else:
-                print("comando inválido.\n")
-            input("pressione enter para retornar... ")
+            message(status, 'a', acc_id)
         elif (option == 'n'):
             acc_id = input("qual o id da conta para não criar? ")
             status = api.cancel(acc_id)
-            if (status == 200):
-                print("id: "+acc_id+" cancelado.\n")
-            elif (status == 404):
-                print("id: "+acc_id+" não encontrado.\n")
-            else:
-                print("comando inválido.\n")
-            input("pressione enter para retornar... ")
+            message(status, 'n', acc_id)
         elif (option == 'd'):
             username = input("qual o login da conta que será apagada? ")
             status, account = api.user_info(username)
@@ -244,12 +229,7 @@ def interactive_mode():
                 delete(account)
                 acc_id = str(account['id'])
                 status = api.delete(acc_id)
-                if (status == 200):
-                    print("conta "+username+" apagada.")
-                elif (status == 404):
-                    print("conta "+username+" fracassou na API.")
-                else:
-                    print("comando inválido.\n")
+                message(status, 'd', username)
             elif (status == 404):
                 print("username: "+username+" não encontrado na API.\n")
                 remover = input("deseja tentar remover uma conta de fora da API? ")
@@ -260,7 +240,7 @@ def interactive_mode():
                         'owner_email': username+'@ime.usp.br'
                     }
                     delete(account)
-            input("pressione enter para retornar... ")
+                input("pressione enter para retornar... ")
         else:
             break
 
