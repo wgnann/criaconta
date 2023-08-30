@@ -1,9 +1,13 @@
 import ldb
+import samba
 from samba import dsdb
 from samba.auth import system_session
 from samba.credentials import Credentials
 from samba.param import LoadParm
 from samba.samdb import SamDB
+
+def create_password():
+    return samba.generate_random_password(12,12)
 
 class SambaTool:
     def __init__(self):
@@ -29,7 +33,7 @@ class SambaTool:
 
     def group2gid(self, groupname):
         query = ("(&(objectCategory=group)(sAMAccountName=%s))"%
-                    ldb.binary_encode(groupname))
+                ldb.binary_encode(groupname))
 
         result = self.search(query)
         if (result.count): return str(result[0]['gidNumber'])
@@ -43,9 +47,18 @@ class SambaTool:
             return max([int(str(r['uidNumber'])) for r in result if 'uidNumber' in r])
         raise Exception("nenhum usuário com uidNumber.")
 
+    def set_password(self, username):
+        query = ("(&(objectClass=user)(sAMAccountName=%s))"%
+                (ldb.binary_encode(username))
+
+        password = create_password()
+        self.samdb.setpassword(filter, password)
+
+        return password
+
     def find_user(self, username):
-        query = ("(&(sAMAccountType=%d)(sAMAccountName=%s))" %
-                  (dsdb.ATYPE_NORMAL_ACCOUNT, ldb.binary_encode(username)))
+        query = ("(&(sAMAccountType=%d)(sAMAccountName=%s))"%
+                (dsdb.ATYPE_NORMAL_ACCOUNT, ldb.binary_encode(username)))
 
         result = self.search(query)
         if (result.count): return result[0]

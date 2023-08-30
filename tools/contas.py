@@ -3,7 +3,6 @@ import criaconta
 import grp
 import os
 import pwd
-import samba
 import smtplib
 import ssl
 import subprocess
@@ -45,9 +44,6 @@ def mail(account, subject, template):
         smtp.login(smtpuser, smtppass)
         smtp.send_message(message)
 
-def create_password():
-    return samba.generate_random_password(12,12)
-
 def create_backend(account):
     username = account['username']
     group = account['group']
@@ -56,7 +52,7 @@ def create_backend(account):
         account['name'] = "grupo {username}".format(**account)
     else:
         account['name'] = unidecode.unidecode(account['name'])
-    account['password'] = create_password()
+    account['password'] = sambatool.create_password()
     account['home'] = "/home/{group}/{username}".format(**account)
     account['uid'] = sambatool.max_uid()
     mail_body = "create.txt"
@@ -153,6 +149,8 @@ def interactive_mode():
             status = api.cancel(acc_id)
             message(status, 'n', acc_id)
         elif (option == 'd'):
+            print("precisa corrigir")
+            exit(1)
             username = input("qual o login da conta que será apagada? ")
             status, account = api.user_info(username)
             if (status == 200):
@@ -185,16 +183,10 @@ def main():
         for request in todo:
             request_id = str(request['id'])
             username = request['username']
-            request['passwd'] = create_password()
-            password(request, 'cpw')
+            request['passwd'] = sambatool.set_password(username)
             mail(request, 'Recuperação de senha', 'passwd.txt')
             status = api.password_reset(request_id)
-            if (status == 200):
-                print("conta "+username+" criada.")
-            elif (status == 404):
-                print("conta "+username+" fracassou na API.")
-            else:
-                print("comando inválido.\n")
+            message(status, "p", username)
     elif (args.create):
         todo = api.list()
         for account in todo:
