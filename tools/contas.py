@@ -12,6 +12,7 @@ from decouple import config
 from email.message import EmailMessage
 
 from message import message
+from ssh import ssh_run
 from tool import SambaTool
 
 api = criaconta.CriaConta()
@@ -23,12 +24,6 @@ def ssh(host, command):
 
 def show(account):
     return "  id: {id}, username: {username}, group: {group}, name: {name}".format(**account)
-
-def setquota(account):
-    username = account['username']
-    soft = config('DISK_QUOTA', cast=int)
-    hard = round(soft*1.2)
-    return ssh("nfs.ime.usp.br", "setquota -a -u %s %s %s 0 0"%(username, soft, hard))
 
 def mail(account, subject, template):
     receiver = account['owner_email']
@@ -66,19 +61,20 @@ def create_backend(account):
     account['uid'] = sambatool.max_uid()
     mail_body = "create.txt"
 
-    # 1) se existe, libera ativação
+    # se existe, libera ativação
     if (sambatool.find_user(username) != None):
         return 0
 
+    # adiciona
     sambatool.add_user(account)
 
-    #mkhomedir_helper printer-local 0066 /root/skel
+    # home
+    ssh_run("nfs", "mkhomedir_helper %s 0066 /root/skel"%username, port=2222)
 
-    # 2) será montado com root_squash
-    # create homedir
-    # chmod 711
-    # chown ?
-    # setquota(account)
+    # quota
+    soft = config('DISK_QUOTA', cast=int)
+    hard = round(soft*1.2)
+    ssh_run("nfs", "setquota -a -u %s %s %s 0 0"%(username, soft, hard), port=2222)
 
     if (account['type'] == 'institucional'):
         print("Observações: %s"%(account['obs']))
