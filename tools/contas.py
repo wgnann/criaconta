@@ -17,9 +17,6 @@ from tool import SambaTool
 api = criaconta.CriaConta()
 sambatool = SambaTool()
 
-def nextuid():
-    return 666
-
 def ssh(host, command):
     run = ["/usr/bin/ssh", "-l", "root", host]+command.split()
     return subprocess.call(run)
@@ -66,7 +63,7 @@ def create_backend(account):
         account['name'] = unidecode.unidecode(account['name'])
     account['password'] = create_password()
     account['home'] = "/home/{group}/{username}".format(**account)
-    account['uid'] = nextuid()
+    account['uid'] = sambatool.max_uid()
     mail_body = "create.txt"
 
     # 1) se existe, libera ativação
@@ -74,6 +71,8 @@ def create_backend(account):
         return 0
 
     sambatool.add_user(account)
+
+    #mkhomedir_helper printer-local 0066 /root/skel
 
     # 2) será montado com root_squash
     # create homedir

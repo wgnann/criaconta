@@ -18,11 +18,12 @@ class SambaTool:
         )
         self.domaindn = self.samdb.domain_dn()
 
-    def search(self, query):
+    def search(self, query, attrs=None):
         result = self.samdb.search(
             base=self.domaindn,
             expression=query,
-            scope=ldb.SCOPE_SUBTREE
+            scope=ldb.SCOPE_SUBTREE,
+            attrs=attrs
         )
         return result
 
@@ -33,6 +34,14 @@ class SambaTool:
         result = self.search(query)
         if (result.count): return str(result[0]['gidNumber'])
         raise Exception("grupo %s não encontrado."%groupname)
+
+    def max_uid(self):
+        query = ("(objectClass=person)")
+
+        result = self.search(query, attrs=['uidNumber'])
+        if (result.count):
+            return max([int(str(r['uidNumber'])) for r in result if 'uidNumber' in r])
+        raise Exception("nenhum usuário com uidNumber.")
 
     def find_user(self, username):
         query = ("(&(sAMAccountType=%d)(sAMAccountName=%s))" %
