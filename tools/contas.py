@@ -52,7 +52,7 @@ def create_backend(account):
         account['name'] = "grupo {username}".format(**account)
     else:
         account['name'] = unidecode.unidecode(account['name'])
-    account['password'] = sambatool.create_password()
+    account['passwd'] = sambatool.create_password()
     account['home'] = "/home/{group}/{username}".format(**account)
     account['uid'] = sambatool.max_uid()
     mail_body = "create.txt"
@@ -74,7 +74,7 @@ def create_backend(account):
 
     if (account['type'] == 'institucional'):
         print("Observações: %s"%(account['obs']))
-    #mail(account, 'Pedido de criação de conta', mail_body)
+    mail(account, 'Pedido de criação de conta', mail_body)
 
     return 0
 

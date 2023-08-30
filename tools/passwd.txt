@@ -1,0 +1,17 @@
+Olá,
+
+A senha foi renovada.
+
+Seguem as novas credenciais:
+login: {username}
+senha: {passwd}
+
+Sugerimos que a senha seja trocada assim que possível.
+    https://wiki.ime.usp.br/tutoriais:como_mudar_a_senha
+
+Informações importantes acerca da conta estão disponíveis em:
+    https://wiki.ime.usp.br/
+
+Atenciosamente,
+
+SI

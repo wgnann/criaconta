@@ -1,0 +1,7 @@
+Olá,
+
+A conta {username} foi removida.
+
+Atenciosamente,
+
+SI
