@@ -1,20 +1,15 @@
 import argparse
-import criaconta
-import grp
-import os
-import pwd
-import smtplib
-import ssl
 import subprocess
 import unidecode
 from decouple import config
-from email.message import EmailMessage
 
+from criaconta import CriaConta
+from mail import mail
 from message import message
 from ssh import ssh_run
 from tool import create_password, SambaTool
 
-api = criaconta.CriaConta()
+api = CriaConta()
 sambatool = SambaTool()
 
 def ssh(host, command):
@@ -23,26 +18,6 @@ def ssh(host, command):
 
 def show(account):
     return "  id: {id}, username: {username}, group: {group}, name: {name}".format(**account)
-
-def mail(account, subject, template):
-    receiver = account['owner_email']
-    server = config('SMTP_SERVER')
-    sender = config('MAIL_SENDER')
-    smtpuser = config('SMTP_USER')
-    smtppass = config('SMTP_PASS')
-    content = open(template, 'r').read()
-
-    message = EmailMessage()
-    message['Subject'] = subject
-    message['From'] = sender
-    message['To'] = receiver
-    message.set_content(content.format(**account))
-
-    context = ssl.create_default_context()
-    with smtplib.SMTP(server, 25) as smtp:
-        smtp.starttls(context=context)
-        smtp.login(smtpuser, smtppass)
-        smtp.send_message(message)
 
 def create_backend(account):
     username = account['username']
@@ -59,7 +34,7 @@ def create_backend(account):
 
     # se existe, libera ativação
     if (sambatool.find_user(username) != None):
-        return 0
+        return
 
     # adiciona
     sambatool.add_user(account)
@@ -75,8 +50,6 @@ def create_backend(account):
     if (account['type'] == 'institucional'):
         print("Observações: %s"%(account['obs']))
     mail(account, 'Pedido de criação de conta', mail_body)
-
-    return 0
 
 def create(account, interactive=True):
     acc_id = str(account['id'])
