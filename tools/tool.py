@@ -49,10 +49,10 @@ class SambaTool:
 
     def set_password(self, username):
         query = ("(&(objectClass=user)(sAMAccountName=%s))"%
-                (ldb.binary_encode(username))
+                (ldb.binary_encode(username)))
 
         password = create_password()
-        self.samdb.setpassword(filter, password)
+        self.samdb.setpassword(query, password)
 
         return password
 
@@ -75,7 +75,7 @@ class SambaTool:
 
         self.samdb.newuser(
             account['username'],
-            account['password'],
+            account['passwd'],
             surname=surname,
             givenname=given_name,
             unixhome=account['home'],

@@ -12,7 +12,7 @@ from email.message import EmailMessage
 
 from message import message
 from ssh import ssh_run
-from tool import SambaTool
+from tool import create_password, SambaTool
 
 api = criaconta.CriaConta()
 sambatool = SambaTool()
@@ -52,7 +52,7 @@ def create_backend(account):
         account['name'] = "grupo {username}".format(**account)
     else:
         account['name'] = unidecode.unidecode(account['name'])
-    account['passwd'] = sambatool.create_password()
+    account['passwd'] = create_password()
     account['home'] = "/home/{group}/{username}".format(**account)
     account['uid'] = sambatool.max_uid()
     mail_body = "create.txt"
