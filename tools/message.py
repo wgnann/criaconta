@@ -1,5 +1,5 @@
 # category: (c)riar, (a)tivar, (n)ão criar, (d)eletar, (p)assword
-def message(status, category, context):
+def message(status, category, context, interactive=True):
     msg = {
         "c": [
             "conta {} criada.".format(context),
@@ -33,4 +33,5 @@ def message(status, category, context):
     else:
         print("comando inválido.\n")
 
-    input("pressione enter para retornar... ")
+    if interactive:
+        input("pressione enter para retornar... ")

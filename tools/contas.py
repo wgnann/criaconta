@@ -78,12 +78,12 @@ def create_backend(account):
 
     return 0
 
-def create(account):
+def create(account, interactive=True):
     acc_id = str(account['id'])
     username = account['username']
     create_backend(account)
     status = api.activate(acc_id)
-    message(status, "c", username)
+    message(status, "c", username, interactive)
 
 def username_group(username):
     group = subprocess.run(["id", "-gn", username], stdout=subprocess.PIPE)
@@ -191,7 +191,7 @@ def main():
         todo = api.list()
         for account in todo:
             print(show(account))
-            create(account)
+            create(account, interactive=False)
     else:
         interactive_mode()
 
