@@ -6,8 +6,8 @@ from decouple import config
 from criaconta import CriaConta
 from mail import mail
 from message import message
-from ssh import ssh_run
 from sambatool import create_password, SambaTool
+from ssh import ssh_run
 
 api = CriaConta()
 sambatool = SambaTool()

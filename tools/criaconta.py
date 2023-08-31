@@ -5,7 +5,7 @@ from decouple import config
 class CriaConta:
     def __init__(self):
         self.api_key = config('API_KEY')
-        self.base_url = config('BASE_URL')
+        self.base_url = config('APP_URL')
 
     def list(self):
         url = self.base_url+'/accounts/todo?api_key='+self.api_key
