@@ -15,7 +15,8 @@ sambatool = SambaTool()
 def show(account):
     return "  id: {id}, username: {username}, group: {group}, name: {name}".format(**account)
 
-def create_backend(account):
+def create(account, interactive=True):
+    acc_id = str(account['id'])
     username = account['username']
     group = account['group']
     # conta institucional tem nome genérico
@@ -28,38 +29,25 @@ def create_backend(account):
     account['uid'] = sambatool.max_uid()
     mail_body = "create.txt"
 
-    # se existe, libera ativação
-    if (sambatool.find_user(username) != None):
-        return
+    # se existe, libera ativação. senão, cria a conta
+    if (sambatool.find_user(username) == None):
+        # adiciona
+        sambatool.add_user(account)
 
-    # adiciona
-    sambatool.add_user(account)
+        # home
+        ssh_run("nfs", "mkhomedir_helper %s 0066 /root/skel"%username, port=2222)
 
-    # home
-    ssh_run("nfs", "mkhomedir_helper %s 0066 /root/skel"%username, port=2222)
+        # quota
+        soft = config('DISK_QUOTA', cast=int)
+        hard = round(soft*1.2)
+        ssh_run("nfs", "setquota -a -u %s %s %s 0 0"%(username, soft, hard), port=2222)
 
-    # quota
-    soft = config('DISK_QUOTA', cast=int)
-    hard = round(soft*1.2)
-    ssh_run("nfs", "setquota -a -u %s %s %s 0 0"%(username, soft, hard), port=2222)
+        if (account['type'] == 'institucional'):
+            print("Observações: {obs}".format(**account))
+        mail(account, 'Pedido de criação de conta', mail_body)
 
-    if (account['type'] == 'institucional'):
-        print("Observações: {obs}".format(**account))
-    mail(account, 'Pedido de criação de conta', mail_body)
-
-def create(account, interactive=True):
-    acc_id = str(account['id'])
-    username = account['username']
-    create_backend(account)
     status = api.activate(acc_id)
     message(status, "c", username, interactive)
-
-def username_group(username):
-    group = subprocess.run(["id", "-gn", username], stdout=subprocess.PIPE)
-    if (group.returncode == 0):
-        return group.stdout.decode().strip()
-    else:
-        return None
 
 def backup_home(account):
     backup_dir = config('BACKUP_DIR')
