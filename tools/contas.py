@@ -7,7 +7,7 @@ from criaconta import CriaConta
 from mail import mail
 from message import message
 from ssh import ssh_run
-from tool import create_password, SambaTool
+from sambatool import create_password, SambaTool
 
 api = CriaConta()
 sambatool = SambaTool()
