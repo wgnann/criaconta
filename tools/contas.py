@@ -73,9 +73,12 @@ def delete(account):
     username = account['username']
     user = sambatool.find_user(username)
     if (user != None):
-        print("%s: grupo %s"%
-                (user['displayName'], sambatool.gid2group(user['gidNumber']))
-        )
+        # conta não encontrada na API
+        if 'group' not in account:
+            account['group'] = sambatool.gid2group(user['gidNumber'])
+            account['name'] = user['displayName']
+            account['owner_email'] = username+'@ime.usp.br'
+        print("{name}: grupo {group}".format(**account))
         print("vou apagar, hein?")
         remover = input("diga sim: ")
         if (remover == "sim"):
@@ -133,12 +136,7 @@ def interactive_mode():
                 print("username: %s não encontrado na API.\n"%username)
                 remover = input("deseja tentar remover uma conta de fora da API? ")
                 if (remover.lower() == 's'):
-                    account = {
-                        'username': username,
-                        'group': username_group(username),
-                        'owner_email': username+'@ime.usp.br'
-                    }
-                    delete(account)
+                    delete({'username': username})
                 input("pressione enter para retornar... ")
         else:
             break
