@@ -75,8 +75,8 @@ def delete(account):
             except:
                 ignore_home = input("home não encontrada, deseja remover mesmo assim? ")
                 if (ignore_home.lower() != 's'):
-                    exit(1)
                     print("remoção cancelada.\n")
+                    exit(1)
             sambatool.delete_user(account)
             mail(account, 'Pedido de remoção de conta', 'delete.txt')
         else:
