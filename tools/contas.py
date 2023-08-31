@@ -12,10 +12,6 @@ from tool import create_password, SambaTool
 api = CriaConta()
 sambatool = SambaTool()
 
-def ssh(host, command):
-    run = ["/usr/bin/ssh", "-l", "root", host]+command.split()
-    return subprocess.call(run)
-
 def show(account):
     return "  id: {id}, username: {username}, group: {group}, name: {name}".format(**account)
 
@@ -48,7 +44,7 @@ def create_backend(account):
     ssh_run("nfs", "setquota -a -u %s %s %s 0 0"%(username, soft, hard), port=2222)
 
     if (account['type'] == 'institucional'):
-        print("Observações: %s"%(account['obs']))
+        print("Observações: {obs}".format(**account))
     mail(account, 'Pedido de criação de conta', mail_body)
 
 def create(account, interactive=True):
@@ -66,32 +62,36 @@ def username_group(username):
         return None
 
 def backup_home(account):
-    username = account['username']
     backup_dir = config('BACKUP_DIR')
-    home = "/home/%s/%s"%(account['group'], username)
-    ssh("nfs.ime.usp.br", "mv %s %s"%(home, backup_dir))
-    return ssh("nfs.ime.usp.br", "ls -lashd %s/%s"%(backup_dir, username))
-
-def user_del(account):
     username = account['username']
-    principal = config('KRB_DEL_PRINCIPAL')
-    keytab = config('KRB_DEL_KEYTAB')
-    command = "delprinc %s"%(username)
-    subprocess.call(["/usr/sbin/smbldap-userdel", username])
-    return subprocess.call(["/usr/bin/kadmin", "-p", principal, "-k", "-t", keytab, "-q", command])
+    home = "/home/{group}/{username}".format(**account)
+    # move o diretório para o backup no servidor de destino
+    ssh_run("nfs", "mv %s %s"%(home, backup_dir), port=2222)
+    print(ssh_run("nfs", "ls -lashd %s/%s"%(backup_dir, username), port=2222))
 
 def delete(account):
-    if (sambatool.find_user(username) != None):
+    username = account['username']
+    user = sambatool.find_user(username)
+    if (user != None):
+        print("%s: grupo %s"%
+                (user['displayName'], sambatool.gid2group(user['gidNumber']))
+        )
         print("vou apagar, hein?")
         remover = input("diga sim: ")
         if (remover == "sim"):
-            backup_home(account)
-            user_del(account)
+            try:
+                backup_home(account)
+            except:
+                ignore_home = input("home não encontrada, deseja remover mesmo assim? ")
+                if (ignore_home.lower() != 's'):
+                    exit(1)
+                    print("remoção cancelada.\n")
+            sambatool.delete_user(account)
             mail(account, 'Pedido de remoção de conta', 'delete.txt')
         else:
             print("remoção cancelada.\n")
     else:
-        print("username: "+account['username']+" não encontrado no backend.\n")
+        print("username: %s não encontrado no backend.\n"%username)
 
 def interactive_mode():
     while (1):
@@ -122,8 +122,6 @@ def interactive_mode():
             status = api.cancel(acc_id)
             message(status, 'n', acc_id)
         elif (option == 'd'):
-            print("precisa corrigir")
-            exit(1)
             username = input("qual o login da conta que será apagada? ")
             status, account = api.user_info(username)
             if (status == 200):
@@ -132,7 +130,7 @@ def interactive_mode():
                 status = api.delete(acc_id)
                 message(status, 'd', username)
             elif (status == 404):
-                print("username: "+username+" não encontrado na API.\n")
+                print("username: %s não encontrado na API.\n"%username)
                 remover = input("deseja tentar remover uma conta de fora da API? ")
                 if (remover.lower() == 's'):
                     account = {

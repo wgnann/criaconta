@@ -39,6 +39,13 @@ class SambaTool:
         if (result.count): return str(result[0]['gidNumber'])
         raise Exception("grupo %s não encontrado."%groupname)
 
+    def gid2group(self, gid):
+        query = ("(&(objectCategory=group)(gidNumber=%s))"%gid)
+
+        result = self.search(query)
+        if (result.count): return str(result[0]['sAMAccountName'])
+        raise Exception("group nro %s não encontrado."%gid)
+
     def max_uid(self):
         query = ("(objectClass=person)")
 
@@ -84,3 +91,6 @@ class SambaTool:
             gidnumber=gid,
             loginshell='/bin/bash'
         )
+
+    def delete_user(self, account):
+        self.samdb.deleteuser(account['username'])
