@@ -30,7 +30,7 @@
       </p>
       </p>
       <p>
-      Faça o <a href="/login/senhaunica">login</a>!
+      Faça o <a href="/login">login</a>!
       </p>
     </div>
   @endauth
