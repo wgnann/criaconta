@@ -11,7 +11,7 @@
           <h5 class="text-success">Conta ativa</h5>
       @else
         <div class="border border-danger my-1 p-1">
-          <h5 class="text-danger">Conta inativa</h5>
+          <h5 class="text-danger">Conta em criação (demora até 5min)</h5>
       @endif
           <table class="table table-sm table-borderless">
             <tr>
