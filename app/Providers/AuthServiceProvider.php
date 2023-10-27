@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use App\Tools\IDMail;
+use Uspdev\Idmail\IDMail;
 
 class AuthServiceProvider extends ServiceProvider
 {

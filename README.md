@@ -34,10 +34,6 @@ php artisan key:generate
 # banco de dados
 touch database/database.sqlite
 php artisan migrate:fresh --seed
-
-# idmail
-mkdir app/Tools
-curl https://raw.githubusercontent.com/wgnann/idmail/master/IDMail.php | sed 's/<?php/<?php\n\nnamespace App\\Tools;/g' > app/Tools/IDMail.php
 ```
 
 ## Utilitário de terminal
