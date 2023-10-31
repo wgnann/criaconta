@@ -26,7 +26,7 @@ def create(account, interactive=True):
         account['name'] = unidecode.unidecode(account['name'])
     account['passwd'] = create_password()
     account['home'] = "/home/{group}/{username}".format(**account)
-    account['uid'] = sambatool.max_uid()
+    account['uid'] = sambatool.max_uid()+1
     mail_body = "create.txt"
 
     # se existe, libera ativação. senão, cria a conta
