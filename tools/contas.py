@@ -51,11 +51,12 @@ def create(account, interactive=True):
 
 def backup_home(account):
     backup_dir = config('BACKUP_DIR')
+    nfs_server = config('NFS_SERVER')
     username = account['username']
     home = "/home/{group}/{username}".format(**account)
     # move o diretório para o backup no servidor de destino
-    ssh_run("nfs", "mv %s %s"%(home, backup_dir), port=2222)
-    print(ssh_run("nfs", "ls -lashd %s/%s"%(backup_dir, username), port=2222))
+    ssh_run(nfs_server, "mv %s %s"%(home, backup_dir), port=2222)
+    print(ssh_run(nfs_server, "ls -lashd %s/%s"%(backup_dir, username), port=2222))
 
 def delete(account):
     username = account['username']
