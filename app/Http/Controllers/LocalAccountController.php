@@ -26,6 +26,12 @@ class LocalAccountController extends Controller
 
     public function store(Request $request)
     {
+        // não é unique simples, pois é username do form + "-local"
+        $request->validate([
+            'username' => 'required',
+            'name' => 'required',
+        ]);
+
         $username = $request->username."-local";
         $account = Account::where('username', $username)->first();
         if ($account) {

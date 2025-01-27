@@ -8,6 +8,7 @@
 @endsection
 
 @section ('content')
+  @include('messages.errors')
   <h4>Informações das contas locais</h4>
   <p>A conta local destina-se aos casos onde não há interesse em manter uma conta de email <span class="font-weight-light">@ime.usp.br</span>.
   <div class="border border-info my-1 p-1">

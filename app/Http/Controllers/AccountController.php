@@ -12,7 +12,12 @@ class AccountController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('can:email')->except('todoAccounts', 'activateAccount', 'cancelAccountRequest', 'deleteAccount', 'accountFromUsername');
+        if (env('USAR_IDMAIL')) {
+            $this->middleware('can:email')->except('todoAccounts', 'activateAccount', 'cancelAccountRequest', 'deleteAccount', 'accountFromUsername');
+        }
+        else {
+            $this->middleware('auth')->except('todoAccounts', 'activateAccount', 'cancelAccountRequest', 'deleteAccount', 'accountFromUsername');
+        }
     }
 
     private function authAPI(Request $request)
@@ -27,7 +32,8 @@ class AccountController extends Controller
             ['type', 'pessoal']
         ])->first();
         $groups = Group::where('vinculo', Auth::user()->vinculo())->get();
-        return view('account.index', compact('account', 'groups'));
+        $idmail = env('USAR_IDMAIL', true);
+        return view('account.index', compact('account', 'groups', 'idmail'));
     }
 
     public function store(Request $request)
@@ -40,12 +46,18 @@ class AccountController extends Controller
             die("grupo não encontrado.");
         }
 
-        $email = IDMail::find_email($user->codpes);
-        if ($email == null) {
-            die("email não encontrado.");
+        if (env('USAR_IDMAIL', true)) {
+            $email = IDMail::find_email($user->codpes);
+            if ($email == null) {
+                die("email não encontrado.");
+            }
+            $account->username = explode('@', $email)[0];
+        }
+        else {
+            $request->validate(['username' => 'required|alpha_num']);
+            $account->username = $request->username;
         }
 
-        $account->username = explode('@', $email)[0];
         $account->name = $user->name;
         $account->type = 'pessoal';
         $account->ativo = 0;

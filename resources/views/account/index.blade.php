@@ -3,6 +3,7 @@
 @section ('title') Cria Conta - IME-USP @endsection
 
 @section ('content')
+  @include('messages.errors')
   <div class="panel">
     <h4>Conta pessoal</h4>
     @if ($account)
@@ -46,10 +47,19 @@
               <th>Nome</th>
               <td>{{ Auth::user()->name }}</td>
             </tr>
-            <tr>
-              <th>Email</th>
-              <td>{{ Auth::user()->email }}</td>
-            </tr>
+            @if ($idmail)
+              <tr>
+                <th>Email</th>
+                <td>{{ Auth::user()->email }}</td>
+              </tr>
+            @else
+              <tr>
+                <th>username</th>
+                <td>
+                  <input class="form-control" type="text" id="username" name="username" placeholder="nome de usuário" pattern="[A-Za-z0-9]*" title="Apenas letras ou números"/>
+                </td>
+              </tr>
+            @endif
             <tr>
               <th>Grupo</th>
               <td>
