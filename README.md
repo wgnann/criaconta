@@ -1,6 +1,3 @@
-## Dependências fora do composer
-  * [idmail](https://github.com/wgnann/idmail)
-
 ## Como configurar o acesso via API
   * Colocar no `.env` a variável `API_KEY`;
   * Acessar os endereços da API usando a variável GET `api_key` com o mesmo valor de `API_KEY`.
@@ -14,7 +11,9 @@
   * `password/requests`: lista pedidos de renovação de senha;
   * `password/{id}/reset`: processa pedido de renovação de senha.
 
-## Deployment
+Sugere-se usar o cliente criaconta.py.
+
+## Deployment manual
 ```console
 # tudo aqui assume estar no diretório recém clonado
 
@@ -34,6 +33,32 @@ php artisan key:generate
 # banco de dados
 touch database/database.sqlite
 php artisan migrate:fresh --seed
+```
+
+## Docker
+```console
+# build
+docker build -t criaconta .
+
+# env
+#   - preencher o env como no exemplo;
+#   - tomar cuidado com aspas (duplas ou simples).
+
+# banco de dados
+#   - criar local com touch;
+#   - usar bind mount;
+#   - tomar cuidado com permissões:
+#     - em especial a do diretório onde residirá o database.sqlite.
+#   - rodar o migrate:fresh via docker exec.
+docker exec -it criaconta php artisan migrate:fresh --seed
+
+# cache do idmail
+#   - criar diretório local;
+#   - usar bind mount;
+#   - tomar cuidado com permissões.
+
+# deployment simples
+docker run -d --rm --name criaconta --env-file=/path/to/.env -v /path/to/database.sqlite:/var/www/html/database/database.sqlite -v /path/to/cache:/var/www/html/resources/cache criaconta
 ```
 
 ## Utilitário de terminal
