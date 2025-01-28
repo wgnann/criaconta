@@ -12,7 +12,12 @@ class InstitutionalAccountController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('can:institutional');
+        if (env('USAR_IDMAIL')) {
+            $this->middleware('can:institutional');
+        }
+        else {
+            die('idmail (desabilitado).');
+        }
     }
 
     public function index()
