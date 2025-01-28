@@ -6,51 +6,18 @@ use App\Models\Account;
 use App\Models\PasswordRequest;
 use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class PasswordRequestController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth')->except('resetPassword', 'listRequests');
-    }
-
     private function authAPI(Request $request)
     {
         return ($request->api_key == getenv('API_KEY'));
     }
 
-    public function index()
+    public function store(Account $account)
     {
-        $account = Account::where([
-            ['user_id', Auth::user()->id],
-            ['type', 'pessoal']
-        ])->first();
-        if (!$account) {
-            request()->session()->flash('alert-danger','Email @ime.usp.br não encontrado');
-            return redirect('/');
-        }
-
-        $password_request = PasswordRequest::where([
-            ['account_id', $account->id],
-            ['ativo', 1]
-        ])->first();
-
-        return view('password.index', compact('password_request'));
-    }
-
-    public function store()
-    {
-        $account = Account::where([
-            ['user_id', Auth::user()->id],
-            ['type', 'pessoal']
-        ])->first();
-        if (!$account) {
-            die("conta não existente.");
-        }
-
-        if (!$account->ativo) {
-            die("conta inativa.");
-        }
+        Gate::authorize('owner', $account);
 
         $password_request = PasswordRequest::where([
             ['account_id', $account->id],
@@ -64,7 +31,7 @@ class PasswordRequestController extends Controller
             $password_request->save();
         }
 
-        return redirect("/password");
+        return view('password.store', compact('password_request'));
     }
 
     public function resetPassword($id, Request $request)

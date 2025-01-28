@@ -32,6 +32,12 @@
               <td>{{ $account->group->name }}</td>
             </tr>
           </table>
+      @if ($account->ativo)
+          <form action="{{ route('password.renew', $account) }}" method="post">
+            @csrf
+            <button type="submit" class="btn btn-primary">Recuperar senha</button>
+          </form>
+      @endif
         </div>
     @else
       <form action="{{ route('accounts') }}" method="post">

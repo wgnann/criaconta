@@ -21,8 +21,7 @@ Route::get('/accounts/{id}/delete', 'AccountController@deleteAccount');
 Route::get('/accounts/{username}/info', 'AccountController@accountFromUsername');
 Route::get('/accounts/todo', 'AccountController@todoAccounts');
 
-Route::get('/password', 'PasswordRequestController@index');
-Route::post('/password', 'PasswordRequestController@store')->name('password.renew');
+Route::post('/password/{account}', 'PasswordRequestController@store')->name('password.renew');
 Route::get('/password/{id}/reset', 'PasswordRequestController@resetPassword');
 Route::get('/password/requests', 'PasswordRequestController@listRequests');
 

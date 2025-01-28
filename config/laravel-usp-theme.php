@@ -33,7 +33,7 @@ $menu = [
     ],
     [
         'text' => 'Recuperar senha',
-        'url' => '/password',
+        'url' => '/accounts',
         'can' => '',
     ],
 ];

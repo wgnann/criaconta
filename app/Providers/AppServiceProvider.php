@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Account;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Route;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +25,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Route::model('account', Account::class);
     }
 }

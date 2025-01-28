@@ -63,7 +63,10 @@
               <td>{{ $account->name }}</td>
               <td>
                 @if ($account->ativo == 1)
-                  ativo
+                  <form action="{{ route('password.renew', $account) }}" method="post">
+                    @csrf
+                    <button type="submit" class="btn btn-primary">Recuperar senha</button>
+                  </form>
                 @else
                   inativo
                 @endif

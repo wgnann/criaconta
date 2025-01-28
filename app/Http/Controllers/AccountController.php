@@ -16,7 +16,7 @@ class AccountController extends Controller
             $this->middleware('can:email')->except('todoAccounts', 'activateAccount', 'cancelAccountRequest', 'deleteAccount', 'accountFromUsername');
         }
         else {
-            $this->middleware('auth')->except('todoAccounts', 'activateAccount', 'cancelAccountRequest', 'deleteAccount', 'accountFromUsername');
+            $this->middleware('can:regular')->except('todoAccounts', 'activateAccount', 'cancelAccountRequest', 'deleteAccount', 'accountFromUsername');
         }
     }
 
