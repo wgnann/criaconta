@@ -8,37 +8,37 @@ class CriaConta:
         self.base_url = config('APP_URL')
 
     def list(self):
-        url = self.base_url+'/accounts/todo?api_key='+self.api_key
+        url = self.base_url+'/api/accounts/todo?api_key='+self.api_key
         response = requests.get(url)
         return response.json()
 
     def activate(self, acc_id):
-        url = self.base_url+'/accounts/'+acc_id+'/activate?api_key='+self.api_key
+        url = self.base_url+'/api/accounts/'+acc_id+'/activate?api_key='+self.api_key
         response = requests.get(url)
         return response.status_code
 
     def cancel(self, acc_id):
-        url = self.base_url+'/accounts/'+acc_id+'/cancel?api_key='+self.api_key
+        url = self.base_url+'/api/accounts/'+acc_id+'/cancel?api_key='+self.api_key
         response = requests.get(url)
         return response.status_code
 
     def delete(self, acc_id):
-        url = self.base_url+'/accounts/'+acc_id+'/delete?api_key='+self.api_key
+        url = self.base_url+'/api/accounts/'+acc_id+'/delete?api_key='+self.api_key
         response = requests.get(url)
         return response.status_code
 
     def password_requests(self):
-        url = self.base_url+'/password/requests?api_key='+self.api_key
+        url = self.base_url+'/api/password/requests?api_key='+self.api_key
         response = requests.get(url)
         return response.json()
 
     def password_reset(self, request_id):
-        url = self.base_url+'/password/'+request_id+'/reset?api_key='+self.api_key
+        url = self.base_url+'/api/password/'+request_id+'/reset?api_key='+self.api_key
         response = requests.get(url)
         return response.status_code
 
     def user_info(self, username):
-        url = self.base_url+'/accounts/'+username+'/info?api_key='+self.api_key
+        url = self.base_url+'/api/accounts/'+username+'/info?api_key='+self.api_key
         response = requests.get(url)
 
         if (response.status_code == 200):
