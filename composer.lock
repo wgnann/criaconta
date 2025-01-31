@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d77ae89cb56343d71c1cfb3be6529513",
+    "content-hash": "2a2313112c1fff272f1337894c1fc1e4",
     "packages": [
         {
             "name": "brick/math",
@@ -5783,16 +5783,16 @@
         },
         {
             "name": "uspdev/idmail",
-            "version": "v1.0",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/uspdev/idmail.git",
-                "reference": "dc4030dd6e1f0a66e844ffb04889f53f86b4380b"
+                "reference": "a6c5aa8b5b32ab63156332e0f000b2028fa5e7be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/uspdev/idmail/zipball/dc4030dd6e1f0a66e844ffb04889f53f86b4380b",
-                "reference": "dc4030dd6e1f0a66e844ffb04889f53f86b4380b",
+                "url": "https://api.github.com/repos/uspdev/idmail/zipball/a6c5aa8b5b32ab63156332e0f000b2028fa5e7be",
+                "reference": "a6c5aa8b5b32ab63156332e0f000b2028fa5e7be",
                 "shasum": ""
             },
             "require": {
@@ -5821,9 +5821,9 @@
             "homepage": "https://github.com/uspdev/idmail",
             "support": {
                 "issues": "https://github.com/uspdev/idmail/issues",
-                "source": "https://github.com/uspdev/idmail/tree/v1.0"
+                "source": "https://github.com/uspdev/idmail/tree/v1.0.1"
             },
-            "time": "2023-10-27T14:25:01+00:00"
+            "time": "2025-01-31T19:33:25+00:00"
         },
         {
             "name": "uspdev/laravel-usp-theme",
