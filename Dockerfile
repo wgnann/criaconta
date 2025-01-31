@@ -16,15 +16,20 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN docker-php-ext-install \
     zip
 
-# laravel
-COPY . .
-RUN chown -R www-data: /var/www
+# apache
 RUN a2enmod rewrite
 RUN sed -i 's|/var/www/html|/var/www/html/public|' /etc/apache2/sites-available/000-default.conf
 
-# criaconta
+# composer cache
+COPY composer.json composer.lock ./
 USER www-data
-RUN composer install --no-interaction --no-dev
+RUN composer install --no-interaction --no-dev --no-autoloader
+
+# criaconta
+USER root
+COPY --chown=www-data . .
+USER www-data
+RUN composer dump-autoload
 
 CMD ["./serve.sh"]
 
