@@ -1,5 +1,11 @@
 <?php
 
+use App\Http\Controllers\IndexController;
+use App\Http\Controllers\AccountController;
+use App\Http\Controllers\InstitutionalAccountController;
+use App\Http\Controllers\LocalAccountController;
+use App\Http\Controllers\PasswordRequestController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -11,15 +17,15 @@
 |
 */
 
-Route::get('/', 'IndexController@index');
+Route::get('/', [IndexController::class, 'index']);
 
-Route::get('/accounts', 'AccountController@index');
-Route::post('/accounts', 'AccountController@store')->name('accounts');
+Route::get('/accounts', [AccountController::class, 'index']);
+Route::post('/accounts', [AccountController::class, 'store'])->name('accounts');
 
-Route::get('/institucional', 'InstitutionalAccountController@index');
-Route::post('/institucional/accounts', 'InstitutionalAccountController@store')->name('institutional.accounts');
+Route::get('/institucional', [InstitutionalAccountController::class, 'index']);
+Route::post('/institucional/accounts', [InstitutionalAccountController::class, 'store'])->name('institutional.accounts');
 
-Route::get('/local', 'LocalAccountController@index');
-Route::post('/local/accounts', 'LocalAccountController@store')->name('local.accounts');
+Route::get('/local', [LocalAccountController::class, 'index']);
+Route::post('/local/accounts', [LocalAccountController::class, 'store'])->name('local.accounts');
 
-Route::post('/password/{account}', 'PasswordRequestController@store')->name('password.renew');
+Route::post('/password/{account}', [PasswordRequestController::class, 'store'])->name('password.renew');

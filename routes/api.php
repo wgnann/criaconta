@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\API\AccountController;
+use App\Http\Controllers\API\PasswordRequestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,11 +15,11 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/accounts/todo', 'API\AccountController@todoAccounts');
-Route::get('/accounts/{id}/activate', 'API\AccountController@activateAccount');
-Route::get('/accounts/{id}/cancel', 'API\AccountController@cancelAccountRequest');
-Route::get('/accounts/{id}/delete', 'API\AccountController@deleteAccount');
-Route::get('/accounts/{username}/info', 'API\AccountController@accountFromUsername');
+Route::get('/accounts/todo', [AccountController::class, 'todoAccounts']);
+Route::get('/accounts/{id}/activate', [AccountController::class, 'activateAccount']);
+Route::get('/accounts/{id}/cancel', [AccountController::class, 'cancelAccountRequest']);
+Route::get('/accounts/{id}/delete', [AccountController::class,'deleteAccount']);
+Route::get('/accounts/{username}/info', [AccountController::class, 'accountFromUsername']);
 
-Route::get('/password/{id}/reset', 'API\PasswordRequestController@resetPassword');
-Route::get('/password/requests', 'API\PasswordRequestController@listRequests');
+Route::get('/password/{id}/reset', [PasswordRequestController::class,'resetPassword']);
+Route::get('/password/requests', [PasswordRequestController::class, 'listRequests']);

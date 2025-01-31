@@ -59,4 +59,8 @@ class User extends Authenticatable
 
         return $vinculo;
     }
+
+    public function accounts() {
+        return $this->hasMany(Account::class);
+    }
 }
