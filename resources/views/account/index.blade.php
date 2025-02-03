@@ -40,7 +40,7 @@
       @endif
         </div>
     @else
-      <form action="{{ route('accounts') }}" method="post">
+      <form action="{{ route('account.store') }}" method="post">
         @csrf
         <div class="border border-info my-1 p-1">
           <h5 class="text-info">Criar conta pessoal</h5>

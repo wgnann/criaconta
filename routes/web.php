@@ -20,12 +20,14 @@ use App\Http\Controllers\PasswordRequestController;
 Route::get('/', [IndexController::class, 'index']);
 
 Route::get('/accounts', [AccountController::class, 'index']);
-Route::post('/accounts', [AccountController::class, 'store'])->name('accounts');
+Route::get('/accounts/show/{account}', [AccountController::class, 'show'])->name('account.show');
+Route::post('/accounts', [AccountController::class, 'store'])->name('account.store');
+Route::get('/accounts/list', [AccountController::class, 'listAccounts'])->name('account.list');
 
 Route::get('/institucional', [InstitutionalAccountController::class, 'index']);
-Route::post('/institucional/accounts', [InstitutionalAccountController::class, 'store'])->name('institutional.accounts');
+Route::post('/institucional/accounts', [InstitutionalAccountController::class, 'store'])->name('institutional.account.store');
 
 Route::get('/local', [LocalAccountController::class, 'index']);
-Route::post('/local/accounts', [LocalAccountController::class, 'store'])->name('local.accounts');
+Route::post('/local/accounts', [LocalAccountController::class, 'store'])->name('local.account.store');
 
 Route::post('/password/{account}', [PasswordRequestController::class, 'store'])->name('password.renew');

@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Account;
 use App\Models\Group;
+use App\Models\User;
 use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Uspdev\Idmail\IDMail;
 
 class AccountController extends Controller
@@ -35,6 +37,36 @@ class AccountController extends Controller
         $username = explode('@', Auth::user()->email)[0];
         $idmail = env('USAR_IDMAIL', true);
         return view('account.index', compact('account', 'groups', 'username', 'idmail'));
+    }
+
+    public function show(Account $account)
+    {
+        Gate::authorize('owner', $account);
+        return view('account.show', compact('account'));
+    }
+
+    public function listAccounts(Request $request)
+    {
+        Gate::authorize('admin');
+        $search = $request->input('search');
+
+        if ($search) {
+            $user = User::where('codpes', $search)->first();
+            if ($user) {
+                $accounts = Account::where('username', 'like', "%$search")
+                    ->orWhere('user_id', $user->id)
+                    ->get();
+            }
+            else {
+                $accounts = Account::where('username', 'like', "%$search")
+                    ->get();
+            }
+        }
+        else {
+            $accounts = Account::all();
+        }
+
+        return view('account.list', compact('accounts'));
     }
 
     public function store(Request $request)

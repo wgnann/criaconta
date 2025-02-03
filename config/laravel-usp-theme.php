@@ -36,6 +36,11 @@ $menu = [
         'url' => '/accounts',
         'can' => '',
     ],
+    [
+        'text' => 'Todas as contas',
+        'url' => '/accounts/list',
+        'can' => 'admin',
+    ],
 ];
 
 return [

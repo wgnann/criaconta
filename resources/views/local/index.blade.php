@@ -13,7 +13,7 @@
   <p>A conta local destina-se aos casos onde não há interesse em manter uma conta de email <span class="font-weight-light">@ime.usp.br</span>.
   <div class="border border-info my-1 p-1">
     <h5 class="text-info">Criar conta local</h5>
-    <form action="{{ route('local.accounts') }}" method="post">
+    <form action="{{ route('local.account.store') }}" method="post">
       @csrf
       <div class="form-row">
         <div class="form-group col">
@@ -70,6 +70,8 @@
                 @else
                   inativo
                 @endif
+              </td>
+              <td><a href="{{ route('account.show', $account) }}">Ver detalhes</a></td>
             </tr>
           @endforeach
         </tbody>

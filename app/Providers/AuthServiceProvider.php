@@ -30,21 +30,21 @@ class AuthServiceProvider extends ServiceProvider
 
         // conta pertence ao usuário
         Gate::define('owner', function (User $user, Account $account) {
-            if (!$account->ativo) {
-                return false;
-            }
+            if (Gate::allows('admin')) return true;
             return $account->user_id === $user->id;
         });
 
         // usuário é docente ou funcionário
         Gate::define('institutional', function (User $user) {
+            if (Gate::allows('admin')) return true;
             return $user->hasPermissionTo('Servidor', 'senhaunica') || $user->hasPermissionTo('Docente', 'senhaunica');
         });
 
         // usuário é elegível para contas (sem IDMail)
         Gate::define('regular', function (User $user) {
-            $aluno = $user->hasPermissionTo('Alunopos', 'senhaunica') || $user->hasPermissionTo('Alunopd', 'senhaunica');
-            return $aluno || $user->can('institutional');
+            if (Gate::allows('admin')) return true;
+            if (Gate::allows('institutional')) return true;
+            return $user->hasPermissionTo('Alunopos', 'senhaunica') || $user->hasPermissionTo('Alunopd', 'senhaunica');
         });
 
         // email existe (uso com IDMail)

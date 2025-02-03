@@ -28,6 +28,7 @@
           <tr>
             <td>{{ $active_account->username }}@ime.usp.br</td>
             <td>{{ $active_account->name }}</td>
+            <td><a href="{{ route('account.show', $active_account) }}">Ver detalhes</a></td>
             <td>
               <form action="{{ route('password.renew', $active_account) }}" method="post">
                 @csrf
@@ -56,7 +57,7 @@
           <tr>
             <td>{{ $queued_account->username }}@ime.usp.br</td>
             <td>{{ $queued_account->name }}</td>
-            <td></td>
+            <td><a href="{{ route('account.show', $queued_account) }}">Ver detalhes</a></td>
           </tr>
         @endforeach
         </tbody>
@@ -66,7 +67,7 @@
   @if ($todo)
     <div class="border border-info my-1 p-1">
       <h5 class="text-info">Contas não criadas</h5>
-      <form action="{{ route('institutional.accounts') }}" method="post">
+      <form action="{{ route('institutional.account.store') }}" method="post">
         @csrf
         <table class="table table-sm table-borderless">
           <thead>
