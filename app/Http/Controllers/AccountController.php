@@ -33,10 +33,13 @@ class AccountController extends Controller
             ['user_id', Auth::user()->id],
             ['type', 'pessoal']
         ])->first();
-        $groups = Group::where('vinculo', Auth::user()->vinculo())->get();
-        $username = explode('@', Auth::user()->email)[0];
+        if ($account) {
+            return redirect()->route('account.show', $account);
+        }
         $idmail = env('USAR_IDMAIL', true);
-        return view('account.index', compact('account', 'groups', 'username', 'idmail'));
+        $username = explode('@', Auth::user()->email)[0];
+        $groups = Group::where('vinculo', Auth::user()->vinculo())->get();
+        return view('account.index', compact('groups', 'username', 'idmail'));
     }
 
     public function show(Account $account)
