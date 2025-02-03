@@ -16,16 +16,16 @@
       @endif
           <table class="table table-sm table-borderless">
             <tr>
-              <th>Responsável</th>
+              <th>Número USP</th>
               <td>{{ $account->user->codpes }}</td>
-            </tr>
-            <tr>
-              <th>username</th>
-              <td>{{ $account->username }}</td>
             </tr>
             <tr>
               <th>Nome</th>
               <td>{{ $account->name }}</td>
+            </tr>
+            <tr>
+              <th>Login</th>
+              <td>{{ $account->username }}</td>
             </tr>
             <tr>
               <th>Grupo</th>
@@ -55,12 +55,12 @@
             </tr>
             @if ($idmail)
               <tr>
-                <th>Email</th>
-                <td>{{ Auth::user()->email }}</td>
+                <th>Login</th>
+                <td>{{ $username }}</td>
               </tr>
             @else
               <tr>
-                <th>username</th>
+                <th>Login</th>
                 <td>
                   <input class="form-control" type="text" id="username" name="username" placeholder="nome de usuário" pattern="[A-Za-z0-9]*" title="Apenas letras ou números"/>
                 </td>

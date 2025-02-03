@@ -32,8 +32,9 @@ class AccountController extends Controller
             ['type', 'pessoal']
         ])->first();
         $groups = Group::where('vinculo', Auth::user()->vinculo())->get();
+        $username = explode('@', Auth::user()->email)[0];
         $idmail = env('USAR_IDMAIL', true);
-        return view('account.index', compact('account', 'groups', 'idmail'));
+        return view('account.index', compact('account', 'groups', 'username', 'idmail'));
     }
 
     public function store(Request $request)
