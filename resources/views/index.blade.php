@@ -1,7 +1,5 @@
 @extends ('laravel-usp-theme::master')
 
-@section ('title') Cria Conta - IME-USP @endsection
-
 @section ('content')
   @include('flash')
   @auth
@@ -35,7 +33,3 @@
     </div>
   @endauth
 @endsection
-
-@section ('footer')
-@endsection
-

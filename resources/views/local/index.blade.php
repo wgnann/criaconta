@@ -1,12 +1,5 @@
 @extends ('laravel-usp-theme::master')
 
-@section ('title') Cria Conta - IME-USP @endsection
-
-@section ('styles')
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-  <link rel="stylesheet" href="{{ asset('/vendor/laravel-usp-theme/css/style.css')}}">
-@endsection
-
 @section ('content')
   @include('messages.errors')
   <h4>Informações das contas locais</h4>
@@ -79,7 +72,3 @@
     </div>
   @endif
 @endsection
-
-@section ('footer')
-@endsection
-

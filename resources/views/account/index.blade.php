@@ -1,7 +1,5 @@
 @extends ('laravel-usp-theme::master')
 
-@section ('title') Cria Conta - IME-USP @endsection
-
 @section ('content')
   @include('messages.errors')
   <div class="panel">
@@ -54,7 +52,3 @@
     </form>
   </div>
 @endsection
-
-@section ('footer')
-@endsection
-

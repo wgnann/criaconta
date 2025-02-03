@@ -1,15 +1,5 @@
 @extends ('laravel-usp-theme::master')
 
-@section ('title') Cria Conta - IME-USP @endsection
-
-@section ('styles')
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-  <link rel="stylesheet" href="{{ asset('/vendor/laravel-usp-theme/css/style.css')}}">
-  <style>
-    .table{table-layout:fixed;}
-  </style>
-@endsection
-
 @section ('content')
   <h4>Informações das contas institucionais</h4>
   @if ($active)
@@ -102,7 +92,3 @@
     <h5>Sem conta institucional.</h5>
   @endif
 @endsection
-
-@section ('footer')
-@endsection
-
