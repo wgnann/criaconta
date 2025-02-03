@@ -19,7 +19,7 @@ $menu = [
     [
         'text' => 'Conta pessoal',
         'url' => '/accounts',
-        'can' => '',
+        'can' => 'user',
     ],
     [
         'text' => 'Conta institucional',
@@ -34,10 +34,10 @@ $menu = [
     [
         'text' => 'Recuperar senha',
         'url' => '/accounts',
-        'can' => '',
+        'can' => 'user',
     ],
     [
-        'text' => 'Todas as contas',
+        'text' => '<span class="text-danger">Todas as contas</span>',
         'url' => '/accounts/list',
         'can' => 'admin',
     ],
