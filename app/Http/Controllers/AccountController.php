@@ -48,7 +48,7 @@ class AccountController extends Controller
         return view('account.show', compact('account'));
     }
 
-    public function listAccounts(Request $request)
+    public function listAdmin(Request $request)
     {
         Gate::authorize('admin');
         $search = $request->input('search');
@@ -69,7 +69,7 @@ class AccountController extends Controller
             $accounts = Account::all();
         }
 
-        return view('account.list', compact('accounts'));
+        return view('account.listadmin', compact('accounts', 'search'));
     }
 
     public function store(Request $request)

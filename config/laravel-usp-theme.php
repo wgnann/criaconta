@@ -38,7 +38,7 @@ $menu = [
     ],
     [
         'text' => '<span class="text-danger">Todas as contas</span>',
-        'url' => '/accounts/list',
+        'url' => '/accounts/list-admin',
         'can' => 'admin',
     ],
 ];
