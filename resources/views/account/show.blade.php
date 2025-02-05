@@ -13,10 +13,10 @@
         @endif
         <div class="card-body">
             <div class="row">
-                <div class="col">
+                <div class="col-sm-5">
                     @include('account.partials.owner')
                 </div>
-                <div class="col">
+                <div class="col-sm-7">
                     @include('account.partials.info')
                 </div>
             </div>

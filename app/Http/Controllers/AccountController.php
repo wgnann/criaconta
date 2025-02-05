@@ -48,6 +48,16 @@ class AccountController extends Controller
         return view('account.show', compact('account'));
     }
 
+    public function list()
+    {
+        Gate::authorize('institutional');
+
+        $user = Auth::user();
+        $accounts = Account::where('user_id', $user->id)->get();
+
+        return view('account.list', compact('accounts'));
+    }
+
     public function listAdmin(Request $request)
     {
         Gate::authorize('admin');
@@ -101,6 +111,6 @@ class AccountController extends Controller
         $account->group_id = $group->id;
         $account->save();
 
-        return redirect("/accounts");
+        return redirect()->route('account');
     }
 }

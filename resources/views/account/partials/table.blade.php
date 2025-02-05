@@ -1,6 +1,6 @@
 <table class="table table-striped datatable-simples">
     <thead>
-        <tr class="table-primary">
+        <tr class="table-info">
             <th>Login</th>
             <th>Nome</th>
             <th>Tipo</th>

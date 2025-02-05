@@ -3,7 +3,7 @@
 @section ('content')
     @include('laravel-usp-theme::blocos.datatable-simples')
     <div class="card card-outline card-primary">
-        <div class="card-header text-white bg-primary">
+        <div class="card-header text-white bg-info">
             @if ($search)
                 <h5 class="card-title">Filtrando por: {{ $search }}</h5>
             @else
@@ -23,7 +23,9 @@
             </div>
             <div class="card border-0">
                 <div class="card-body">
-                    @include('account.partials.table')
+                    <div class="table-responsive-sm">
+                        @include('account.partials.table')
+                    </div>
                 </div>
             </div>
         </div>

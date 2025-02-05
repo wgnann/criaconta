@@ -32,6 +32,11 @@ $menu = [
         'can'  => 'institutional',
     ],
     [
+        'text' => 'Minhas contas',
+        'url' => '/accounts/list',
+        'can' => 'institutional',
+    ],
+    [
         'text' => 'Recuperar senha',
         'url' => '/accounts',
         'can' => 'user',

@@ -26,6 +26,8 @@ Route::get('/accounts/show/{account}', [AccountController::class, 'show'])
     ->name('account.show');
 Route::post('/accounts', [AccountController::class, 'store'])
     ->name('account.store');
+Route::get('/accounts/list', [AccountController::class, 'list'])
+    ->name('account.list');
 Route::get('/accounts/list-admin', [AccountController::class, 'listAdmin'])
     ->name('account.listadmin');
 
