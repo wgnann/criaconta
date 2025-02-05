@@ -23,7 +23,7 @@
                 <div class="form-group col">
                     <label for="group">Grupo</label>
                     <select class="custom-select" id="group" name="group">
-                        <option select>Selecionar grupo</option>>
+                        <option select>Selecionar grupo</option>
                         @foreach ($groups as $group)
                             <option value="{{ $group->id }}">
                             {{ $group->name }}

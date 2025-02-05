@@ -1,42 +1,17 @@
-@extends ('laravel-usp-theme::master')
+@extends('layouts.app')
 
 @section ('content')
-  <h4>Informações das contas institucionais</h4>
-  @if ($todo)
-    <div class="border border-info my-1 p-1">
-      <h5 class="text-info">Contas não criadas</h5>
-      <form action="{{ route('institutional.account.store') }}" method="post">
-        @csrf
-        <table class="table table-sm table-borderless">
-          <thead>
-            <tr>
-              <th>Email</th>
-              <th>Nome</th>
-              <th>Escolhida</th>
-            </td>
-          </thead>
-          <tbody>
-            @foreach ($todo as $todo_key => $todo_account)
-              <tr>
-                <td><label for="{{ $todo_account['email'] }}">{{ $todo_account['email'] }}</label></td>
-                <td><label for="{{ $todo_account['email'] }}">{{ $todo_account['name'] }}</label></td>
-                <td><input type="radio" id="{{ $todo_account['email'] }}" name="email" value="{{ $todo_account['email'] }}" /></td>
-              </tr>
-            @endforeach
-            <tr>
-              <td colspan="3">
-                <div class="input-group">
-                  <textarea class="form-control" placeholder="Observações" name="obs"></textarea>
-                  <button class="btn btn-info" type="submit">Criar</button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </form>
+    <div class="card card-outline card-primary">
+        <div class="card-header text-white bg-info">
+            <h5 class="card-title">Criar conta institucional</h5>
+        </div>
+        <div class="card-body">
+            <p>A conta institucional destina-se aos casos como seções e eventos que já contam com um endereço de email <span class="font-weight-light">@ime.usp.br</span>.
+            @if ($todo)
+                @include('institutional.partials.form')
+            @else
+                <p>Crie seu endereço email institucional em: <a href="https://id.usp.br">id.usp.br</a>.</p>
+            @endif
+        </div>
     </div>
-  @endif
-  @if (!$todo and !$queued and !$active)
-    <h5>Sem conta institucional.</h5>
-  @endif
 @endsection

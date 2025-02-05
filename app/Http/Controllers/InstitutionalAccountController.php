@@ -65,6 +65,6 @@ class InstitutionalAccountController extends Controller
             die("email não encontrado.");
         }
 
-        return redirect("/institucional");
+        return redirect()->route('account.list');
     }
 }
