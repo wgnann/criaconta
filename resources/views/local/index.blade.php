@@ -38,37 +38,4 @@
       </div>
     </form>
   </div>
-  @if ($accounts)
-    <div class="border border-success my-1 p-1">
-      <h5 class="text-success">Contas solicitadas</h5>
-      <table class="table table-sm table-borderless">
-        <thead>
-          <tr>
-            <th>Login</th>
-            <th>Nome</th>
-            <th>Status</th>
-          </td>
-        </thead>
-        <tbody>
-          @foreach ($accounts as $account)
-            <tr>
-              <td>{{ $account->username }}</td>
-              <td>{{ $account->name }}</td>
-              <td>
-                @if ($account->ativo == 1)
-                  <form action="{{ route('password.renew', $account) }}" method="post">
-                    @csrf
-                    <button type="submit" class="btn btn-primary">Recuperar senha</button>
-                  </form>
-                @else
-                  inativo
-                @endif
-              </td>
-              <td><a href="{{ route('account.show', $account) }}">Ver detalhes</a></td>
-            </tr>
-          @endforeach
-        </tbody>
-      </table>
-    </div>
-  @endif
 @endsection

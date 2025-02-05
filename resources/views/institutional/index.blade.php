@@ -2,58 +2,6 @@
 
 @section ('content')
   <h4>Informações das contas institucionais</h4>
-  @if ($active)
-    <div class="border border-success my-1 p-1">
-      <h5 class="text-success">Contas ativas</h5>
-      <table class="table table-sm table-borderless">
-        <thead>
-          <tr>
-            <th>Email</th>
-            <th>Nome</th>
-            <th></th>
-          </td>
-        </thead>
-        <tbody>
-        @foreach ($active as $active_account)
-          <tr>
-            <td>{{ $active_account->username }}@ime.usp.br</td>
-            <td>{{ $active_account->name }}</td>
-            <td><a href="{{ route('account.show', $active_account) }}">Ver detalhes</a></td>
-            <td>
-              <form action="{{ route('password.renew', $active_account) }}" method="post">
-                @csrf
-                <button type="submit" class="btn btn-primary">Recuperar senha</button>
-              </form>
-            </td>
-          </tr>
-        @endforeach
-        </tbody>
-      </table>
-    </div>
-  @endif
-  @if ($queued)
-    <div class="border border-danger my-1 p-1">
-      <h5 class="text-danger">Contas em criação (demora até 5min)</h5>
-      <table class="table table-sm table-borderless">
-        <thead>
-          <tr>
-            <th>Email</th>
-            <th>Nome</th>
-            <th></th>
-          </td>
-        </thead>
-        <tbody>
-        @foreach ($queued as $queued_account)
-          <tr>
-            <td>{{ $queued_account->username }}@ime.usp.br</td>
-            <td>{{ $queued_account->name }}</td>
-            <td><a href="{{ route('account.show', $queued_account) }}">Ver detalhes</a></td>
-          </tr>
-        @endforeach
-        </tbody>
-      </table>
-    </div>
-  @endif
   @if ($todo)
     <div class="border border-info my-1 p-1">
       <h5 class="text-info">Contas não criadas</h5>

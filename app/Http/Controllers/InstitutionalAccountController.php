@@ -24,8 +24,6 @@ class InstitutionalAccountController extends Controller
     {
         $nusp = Auth::user()->codpes;
         $accounts = IDMail::find_lists($nusp);
-        $active = [];
-        $queued = [];
         $todo = [];
         foreach ($accounts as $account) {
             $username = explode("@", $account['email'])[0];
@@ -33,16 +31,8 @@ class InstitutionalAccountController extends Controller
             if (is_null($local_account)) {
                 $todo[] = $account;
             }
-            else {
-                if ($local_account->ativo) {
-                    $active[] = $local_account;
-                }
-                else {
-                    $queued[] = $local_account;
-                }
-            }
         }
-        return view('institutional.index', compact('todo', 'queued', 'active'));
+        return view('institutional.index', compact('todo'));
     }
 
     public function store(Request $request)

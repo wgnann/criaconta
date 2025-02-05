@@ -16,12 +16,8 @@ class LocalAccountController extends Controller
 
     public function index()
     {
-        $accounts = Account::where([
-            ['user_id', Auth::user()->id],
-            ['type', 'local']
-        ])->get();
         $groups = Group::where('vinculo', 'Outro')->get();
-        return view('local.index', compact('accounts', 'groups'));
+        return view('local.index', compact('groups'));
     }
 
     public function store(Request $request)
