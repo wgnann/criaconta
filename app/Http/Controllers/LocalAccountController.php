@@ -51,6 +51,6 @@ class LocalAccountController extends Controller
         $account->obs = $request->obs;
         $account->save();
 
-        return redirect("/local");
+        return redirect()->route('account.list');
     }
 }

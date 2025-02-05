@@ -111,6 +111,6 @@ class AccountController extends Controller
         $account->group_id = $group->id;
         $account->save();
 
-        return redirect()->route('account');
+        return redirect()->route('account.show', $account);
     }
 }
