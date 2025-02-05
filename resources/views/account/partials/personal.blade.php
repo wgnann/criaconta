@@ -17,7 +17,7 @@
                     @if ($idmail)
                         <input class="form-control" type="text" id="username" value="{{ $username }}" readonly />
                     @else
-                        <input class="form-control" type="text" id="username" placeholder="nome de usuário" pattern="[A-Za-z0-9]*" title="Apenas letras ou números." />
+                        <input class="form-control" type="text" id="username" name="username" placeholder="nome de usuário" pattern="[A-Za-z0-9]*" title="Apenas letras ou números." />
                     @endif
                 </div>
                 <div class="form-group col">
