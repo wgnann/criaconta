@@ -7,6 +7,7 @@
             @csrf
             <div class="form-row">
                 <div class="form-group col">
+                    <label for="email">Email</label>
                     <select class="custom-select" id="email" name="email">
                         @foreach ($todo as $todo_key => $todo_account)
                             <option value="{{ $todo_account['email'] }}">

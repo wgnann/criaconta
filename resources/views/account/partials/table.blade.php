@@ -1,4 +1,4 @@
-<table class="table table-striped datatable-simples">
+<table class="table table-striped datatable-simples dt-paging-10">
     <thead>
         <tr class="table-info">
             <th>Login</th>
