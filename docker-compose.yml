@@ -1,0 +1,8 @@
+services:
+  criaconta:
+    build:
+      context: .
+    env_file: .env
+    volumes:
+      - ./database/database.sqlite:${DB_DATABASE}
+      - ./resources/cache:${MAIL_CACHE}
